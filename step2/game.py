@@ -1,0 +1,52 @@
+import pygame
+
+
+def render_title(screen):
+    # draw title text to a surface
+    surface = large_font.render("Spooky House", True, (255, 255, 255))
+    # calculate the x postion to center text
+    screen_x = (screen_width - surface.get_width()) / 2
+    # draw to screen
+    screen.blit(surface, (screen_x, 0))
+
+# Define variables
+screen_width = 800
+screen_height = 600
+
+# set up pygame
+pygame.init()
+
+# set up a screen 800 pixels wide by 600 high
+screen = pygame.display.set_mode((screen_width, screen_height))
+
+# set up the clock
+clock = pygame.time.Clock()
+
+# set up font support
+pygame.font.init()
+large_font = pygame.font.Font("../assets/StartlingFont.ttf", 60)
+
+# keep the game running while true
+running = True
+
+while running:
+
+    # handle every event since the last frame.
+    for event in pygame.event.get():
+
+        # if quit (esc) exit the game
+        if event.type == pygame.QUIT:
+            pygame.quit()  # quit the screen
+            running = False
+
+    # fill the screen with a solid black colour
+    screen.fill((0, 0, 0))
+
+    # draw title
+    render_title(screen)
+
+    # update the screen
+    pygame.display.update()
+
+    # limit the game to 60 frames per second
+    clock.tick(60)
