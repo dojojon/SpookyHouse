@@ -1,7 +1,8 @@
 import pygame
 
 
-def render_title(screen):
+def render_title():
+    global screen
     # draw title text to a surface
     surface = large_font.render("Spooky House", True, (255, 255, 255))
     # calculate the x postion to center text
@@ -43,7 +44,7 @@ while running:
     screen.fill((0, 0, 0))
 
     # draw title
-    render_title(screen)
+    render_title()
 
     # update the screen
     pygame.display.update()

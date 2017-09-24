@@ -5,19 +5,18 @@
 Python 3 
 Pygame
 
-### Step 
+### Step 1
 Initilize pygame and set up the main loop
 
-### Step 
+### Step 2
 Write some text to the screen
 
-### Step 
-
+### Step 3
 Draw a sprite to the screen
-Background
-House
+    House
+    Sky 
 
-### Step 
+### Step 4
 Draw ghost
 Hide Ghost
 Draw Ghost and random window
