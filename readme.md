@@ -17,15 +17,21 @@ Draw a sprite to the screen
     Sky 
 
 ### Step 4
-Draw ghost
-Hide Ghost
-Draw Ghost and random window
+Draw all ghost
+
+### Step 5
+Randomise the ghost to display
+Hide the ghost after a time
+Show a ghost after a time
 
 ### Step  
 Mouse click
 
 ### Step  
-Scores
+Score
+
+### Step
+Lives and Game Over
 
 ### Step 
 Sound

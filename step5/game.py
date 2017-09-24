@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 
 
 def render_sky():
@@ -36,6 +37,8 @@ def render_ghost(ghost):
     windows_scaled = pygame.transform.scale(
         ghost_image, (window_width, window_height))
     screen.blit(windows_scaled, (ghost_window[0], ghost_window[1]))
+    # index_surface = large_font.render(str(ghost), True, (255, 0, 0))
+    # screen.blit(index_surface, (ghost_window[0], ghost_window[1]))
 
 
 # Define variables
@@ -81,6 +84,8 @@ window_positions = [
     [395, 408, 438, 478],
     [73, 428, 88, 458]]
 
+active_ghost = 0
+
 
 # keep the game running while true
 running = True
@@ -107,8 +112,11 @@ while running:
     # render ghost
 
     # draw them all
-    for ghost_index in range(0, len(window_positions)):
-        render_ghost(ghost_index)
+    # for ghost_index in range(0, len(window_positions)):
+    #     render_ghost(ghost_index)
+
+    active_ghost = randint(0, len(window_positions) - 1)
+    render_ghost(active_ghost)
 
     # draw house
     render_house()
