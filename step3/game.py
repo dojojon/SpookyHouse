@@ -2,28 +2,29 @@ import pygame
 
 
 def render_sky():
-    global screen
+    "Draw the sky"
     screen.blit(sky_image, (0, 0))
 
 
 def render_windows():
-    global screen
+    "Draw the window back grounds"
     screen.blit(windows_image, (0, 0))
 
 
 def render_house():
-    global screen
-
+    "Draw the house"
     screen.blit(house_image, (0, 0))
 
 
 def render_title():
+    "Draw the title of the game in the center of the screen"
     # draw title text to a surface
     surface = large_font.render("Spooky House", True, (255, 255, 255))
     # calculate the x postion to center text
     screen_x = (screen_width - surface.get_width()) / 2
     # draw to screen
     screen.blit(surface, (screen_x, 0))
+
 
 # Define variables
 screen_width = 800

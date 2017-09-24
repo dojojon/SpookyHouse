@@ -24,6 +24,9 @@ Randomise the ghost to display
 Hide the ghost after a time
 Show a ghost after a time
 
+### Step
+Fade a ghost in and out
+
 ### Step  
 Mouse click
 

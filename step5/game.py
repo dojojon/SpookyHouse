@@ -3,23 +3,22 @@ from random import randint
 
 
 def render_sky():
-    global screen
+    "Draw the sky"
     screen.blit(sky_image, (0, 0))
 
 
 def render_windows():
-    global screen
+    "Draw the window back grounds"
     screen.blit(windows_image, (0, 0))
 
 
 def render_house():
-    global screen
-
+    "Draw the house"
     screen.blit(house_image, (0, 0))
 
 
 def render_title():
-    global screen
+    "Draw the title of the game in the center of the screen"
     # draw title text to a surface
     surface = large_font.render("Spooky House", True, (255, 255, 255))
     # calculate the x postion to center text
@@ -28,8 +27,23 @@ def render_title():
     screen.blit(surface, (screen_x, 0))
 
 
+def update_ghosts():
+    "Update the ghost states"
+    # check to see how many ghost we are displaying
+    if(ghost_states.count(1) == 0):
+        ghost_to_turn_on = randint(0, len(window_positions))
+        ghost_states[ghost_to_turn_on] = 1
+
+
+def render_ghosts():
+    "Draw the ghosts"
+    for ghost_index in range(0, len(window_positions)):
+        if(ghost_states[ghost_index] == 1):
+            render_ghost(ghost_index)
+
+
 def render_ghost(ghost):
-    global screen, window_positions
+    "Draw a ghost"
 
     ghost_window = window_positions[ghost]
     window_width = ghost_window[2] - ghost_window[0]
@@ -37,8 +51,6 @@ def render_ghost(ghost):
     windows_scaled = pygame.transform.scale(
         ghost_image, (window_width, window_height))
     screen.blit(windows_scaled, (ghost_window[0], ghost_window[1]))
-    # index_surface = large_font.render(str(ghost), True, (255, 0, 0))
-    # screen.blit(index_surface, (ghost_window[0], ghost_window[1]))
 
 
 # Define variables
@@ -84,8 +96,9 @@ window_positions = [
     [395, 408, 438, 478],
     [73, 428, 88, 458]]
 
-active_ghost = 0
-
+ghost_states = []
+for ghost_index in range(0, len(window_positions)):
+    ghost_states.append(0)
 
 # keep the game running while true
 running = True
@@ -103,6 +116,9 @@ while running:
     # fill the screen with a solid black colour
     screen.fill((0, 0, 0))
 
+    # Update ghosts
+    update_ghosts()
+
     # draw sky
     render_sky()
 
@@ -110,13 +126,7 @@ while running:
     render_windows()
 
     # render ghost
-
-    # draw them all
-    # for ghost_index in range(0, len(window_positions)):
-    #     render_ghost(ghost_index)
-
-    active_ghost = randint(0, len(window_positions) - 1)
-    render_ghost(active_ghost)
+    render_ghosts()
 
     # draw house
     render_house()

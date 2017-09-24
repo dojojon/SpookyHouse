@@ -2,23 +2,22 @@ import pygame
 
 
 def render_sky():
-    global screen
+    "Draw the sky"
     screen.blit(sky_image, (0, 0))
 
 
 def render_windows():
-    global screen
+    "Draw the window back grounds"
     screen.blit(windows_image, (0, 0))
 
 
 def render_house():
-    global screen
-
+    "Draw the house"
     screen.blit(house_image, (0, 0))
 
 
 def render_title():
-    global screen
+    "Draw the title of the game in the center of the screen"
     # draw title text to a surface
     surface = large_font.render("Spooky House", True, (255, 255, 255))
     # calculate the x postion to center text
@@ -28,7 +27,7 @@ def render_title():
 
 
 def render_ghost(ghost):
-    global screen, window_positions
+    "Draw a ghost"
 
     ghost_window = window_positions[ghost]
     window_width = ghost_window[2] - ghost_window[0]
