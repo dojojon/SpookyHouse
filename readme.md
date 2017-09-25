@@ -20,7 +20,9 @@ Draw a sprite to the screen
 Draw all ghost
 
 ### Step 5
-Randomise the ghost to display
+Show a random ghost if none is displayed
+
+### Step 6
 Hide the ghost after a time
 Show a ghost after a time
 

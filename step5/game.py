@@ -5,16 +5,19 @@ from random import randint
 def render_sky():
     "Draw the sky"
     screen.blit(sky_image, (0, 0))
+    return
 
 
 def render_windows():
     "Draw the window back grounds"
     screen.blit(windows_image, (0, 0))
+    return
 
 
 def render_house():
     "Draw the house"
     screen.blit(house_image, (0, 0))
+    return
 
 
 def render_title():
@@ -25,32 +28,42 @@ def render_title():
     screen_x = (screen_width - surface.get_width()) / 2
     # draw to screen
     screen.blit(surface, (screen_x, 0))
+    return
 
 
 def update_ghosts():
     "Update the ghost states"
     # check to see how many ghost we are displaying
-    if(ghost_states.count(1) == 0):
+    if(any(ghost for ghost in ghost_states if ghost["visible"]) != True):
         ghost_to_turn_on = randint(0, len(window_positions))
-        ghost_states[ghost_to_turn_on] = 1
+        ghost_states[ghost_to_turn_on]["visible"] = True
+    return
 
 
 def render_ghosts():
     "Draw the ghosts"
+    # Check each of the ghosts
     for ghost_index in range(0, len(window_positions)):
-        if(ghost_states[ghost_index] == 1):
+        # Check if its visible
+        if(ghost_states[ghost_index]["visible"]):
+            # Draw it
             render_ghost(ghost_index)
+    return
 
 
 def render_ghost(ghost):
     "Draw a ghost"
-
+    # Get the window position
     ghost_window = window_positions[ghost]
+    # Calculate width and height of Window
     window_width = ghost_window[2] - ghost_window[0]
     window_height = ghost_window[3] - ghost_window[1]
+    # Resize the ghost image to the window
     windows_scaled = pygame.transform.scale(
         ghost_image, (window_width, window_height))
+    # Draw ghost
     screen.blit(windows_scaled, (ghost_window[0], ghost_window[1]))
+    return
 
 
 # Define variables
@@ -98,7 +111,11 @@ window_positions = [
 
 ghost_states = []
 for ghost_index in range(0, len(window_positions)):
-    ghost_states.append(0)
+    ghost_state = {
+        "opactity": 0,
+        "visible": False
+    }
+    ghost_states.append(ghost_state)
 
 # keep the game running while true
 running = True

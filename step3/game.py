@@ -4,16 +4,19 @@ import pygame
 def render_sky():
     "Draw the sky"
     screen.blit(sky_image, (0, 0))
+    return
 
 
 def render_windows():
     "Draw the window back grounds"
     screen.blit(windows_image, (0, 0))
+    return
 
 
 def render_house():
     "Draw the house"
     screen.blit(house_image, (0, 0))
+    return
 
 
 def render_title():
@@ -24,6 +27,7 @@ def render_title():
     screen_x = (screen_width - surface.get_width()) / 2
     # draw to screen
     screen.blit(surface, (screen_x, 0))
+    return
 
 
 # Define variables
