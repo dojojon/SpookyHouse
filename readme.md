@@ -26,11 +26,11 @@ Show a random ghost if none is displayed
 Hide the ghost after a time
 Show a ghost after a time
 
+### Step 7 
+Mouse click
+
 ### Step
 Fade a ghost in and out
-
-### Step  
-Mouse click
 
 ### Step  
 Score
