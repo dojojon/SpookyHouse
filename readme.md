@@ -31,6 +31,7 @@ Check for mouse clicks
 Check for mouse clicks on visible ghosts
 
 ### Step 8
+Hide found ghost
 Score
 
 ### Step

@@ -104,9 +104,10 @@ def checkMouseClick(mouse_position):
             ghost_window = window_positions[ghost_index]
 
             # call a function to check if we have clicked ghost
-            ghost_found = checkPointInRectangle(mouse_position, ghost_window[0], ghost_window[
-                                                1], ghost_window[2], ghost_window[3])
-            if(ghost_found):
+            ghost_clicked = checkPointInRectangle(mouse_position, ghost_window[0], ghost_window[
+                1], ghost_window[2], ghost_window[3])
+
+            if(ghost_clicked):
                 print("found found found")
 
     return
