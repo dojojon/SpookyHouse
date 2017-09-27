@@ -27,16 +27,17 @@ Hide the ghost after a time
 Show a ghost after a time
 
 ### Step 7 
-Mouse click
+Check for mouse clicks 
+Check for mouse clicks on visible ghosts
 
-### Step
-Fade a ghost in and out
-
-### Step  
+### Step 8
 Score
 
 ### Step
 Lives and Game Over
+
+### Step
+Fade a ghost in and out
 
 ### Step 
 Sound
