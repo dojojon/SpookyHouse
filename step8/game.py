@@ -32,12 +32,39 @@ def render_title():
 
 
 def update_ghosts():
+    global hide_ghost_at, show_ghost_at
     "Update the ghost states"
-    # check to see how many ghost we are displaying
-    if(any(ghost for ghost in ghost_states if ghost["visible"]) != True):
-        ghost_to_turn_on = randint(0, len(window_positions))
-        ghost_states[ghost_to_turn_on]["visible"] = True
+
+    # if the hide time is in the past, hide the ghosts
+    if hide_ghost_at < pygame.time.get_ticks():
+        for ghost in ghost_states:
+            if ghost["visible"] == True:
+                ghost["visible"] = False
+                show_ghost_at = randomShowTime()
+
+    # if we have no ghosts displayed
+    if any(ghost for ghost in ghost_states if ghost["visible"]) != True:
+        # and the show_ghost_at is in the past, show a ghost
+        if show_ghost_at < pygame.time.get_ticks():
+            ghost_to_turn_on = randint(0, len(window_positions))
+            ghost_states[ghost_to_turn_on]["visible"] = True
+            hide_ghost_at = randomHideTime()
+
     return
+
+
+def randomHideTime():
+    "Return when to hide the ghost in ticks"
+    now = pygame.time.get_ticks()
+    now = now + randint(1000, 2000)
+    return now
+
+
+def randomShowTime():
+    "Return when to show the next ghost in ticks"
+    now = pygame.time.get_ticks()
+    now = now + randint(1000, 3000)
+    return now
 
 
 def render_ghosts():
@@ -65,6 +92,50 @@ def render_ghost(ghost):
     screen.blit(windows_scaled, (ghost_window[0], ghost_window[1]))
     return
 
+
+def checkMouseClick(mouse_position):
+    "Check if the mouse position is over a visible ghost"
+    for ghost_index in range(0, len(window_positions)):
+
+        # Check if its visible
+        if(ghost_states[ghost_index]["visible"]):
+
+            # get the window for the ghost
+            ghost_window = window_positions[ghost_index]
+
+            # call a function to check if we have clicked ghost
+            ghost_clicked = checkPointInRectangle(mouse_position, ghost_window[0], ghost_window[
+                1], ghost_window[2], ghost_window[3])
+
+            if(ghost_clicked):
+                ghost_found()
+
+    return
+
+
+def ghost_found():
+    "Found a ghost"
+    global score, hide_ghost_at
+    hide_ghost_at = 0
+    score = score + 1
+    return
+
+
+def render_score():
+    "Draw the score"
+    # draw title text to a surface
+    surface = large_font.render("Score:" + str(score), True, (255, 255, 255))
+    screen.blit(surface, (10, 0))
+    return
+
+
+def checkPointInRectangle(mouse_position, x1, y1, x2, y2):
+    "check to see point is in rectangle"
+    # create a rectangle
+    rect = pygame.Rect((x1, y1), (x2, y2))
+    # check to see if our mouse position is inside the rectangle
+    result = rect.collidepoint(mouse_position)
+    return result
 
 # Define variables
 screen_width = 800
@@ -117,6 +188,11 @@ for ghost_index in range(0, len(window_positions)):
     }
     ghost_states.append(ghost_state)
 
+hide_ghost_at = 0
+show_ghost_at = 0
+
+score = 0
+
 # keep the game running while true
 running = True
 
@@ -129,6 +205,8 @@ while running:
         if event.type == pygame.QUIT:
             pygame.quit()  # quit the screen
             running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            checkMouseClick(pygame.mouse.get_pos())
 
     # fill the screen with a solid black colour
     screen.fill((0, 0, 0))
@@ -150,6 +228,9 @@ while running:
 
     # draw title
     render_title()
+
+    # draw score
+    render_score()
 
     # update the screen
     pygame.display.update()

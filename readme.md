@@ -20,21 +20,25 @@ Draw a sprite to the screen
 Draw all ghost
 
 ### Step 5
-Randomise the ghost to display
+Show a random ghost if none is displayed
+
+### Step 6
 Hide the ghost after a time
 Show a ghost after a time
 
-### Step
-Fade a ghost in and out
+### Step 7 
+Check for mouse clicks 
+Check for mouse clicks on visible ghosts
 
-### Step  
-Mouse click
-
-### Step  
+### Step 8
+Hide found ghost
 Score
 
-### Step
+### Step 9
 Lives and Game Over
+
+### Step
+Fade a ghost in and out
 
 ### Step 
 Sound

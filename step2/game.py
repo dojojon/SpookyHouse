@@ -9,6 +9,7 @@ def render_title():
     screen_x = (screen_width - surface.get_width()) / 2
     # draw to screen
     screen.blit(surface, (screen_x, 0))
+    return
 
 # Define variables
 screen_width = 800
@@ -25,7 +26,7 @@ clock = pygame.time.Clock()
 
 # set up font support
 pygame.font.init()
-large_font = pygame.font.Font("../assets/StartlingFont.ttf", 60)
+large_font = pygame.font.Font("../assets/StartlingFont.ttf", 50)
 
 # keep the game running while true
 running = True

@@ -32,12 +32,39 @@ def render_title():
 
 
 def update_ghosts():
+    global hide_ghost_at, show_ghost_at
     "Update the ghost states"
-    # check to see how many ghost we are displaying
-    if(any(ghost for ghost in ghost_states if ghost["visible"]) != True):
-        ghost_to_turn_on = randint(0, len(window_positions))
-        ghost_states[ghost_to_turn_on]["visible"] = True
+
+    # if the hide time is in the past, hide the ghosts
+    if hide_ghost_at < pygame.time.get_ticks():
+        for ghost in ghost_states:
+            if ghost["visible"] == True:
+                ghost["visible"] = False
+                show_ghost_at = randomShowTime()
+
+    # if we have no ghosts displayed
+    if any(ghost for ghost in ghost_states if ghost["visible"]) != True:
+        # and the show_ghost_at is in the past, show a ghost
+        if show_ghost_at < pygame.time.get_ticks():
+            ghost_to_turn_on = randint(0, len(window_positions))
+            ghost_states[ghost_to_turn_on]["visible"] = True
+            hide_ghost_at = randomHideTime()
+
     return
+
+
+def randomHideTime():
+    "Return when to hide the ghost in ticks"
+    now = pygame.time.get_ticks()
+    now = now + randint(1000, 2000)
+    return now
+
+
+def randomShowTime():
+    "Return when to show the next ghost in ticks"
+    now = pygame.time.get_ticks()
+    now = now + randint(1000, 3000)
+    return now
 
 
 def render_ghosts():
@@ -116,6 +143,9 @@ for ghost_index in range(0, len(window_positions)):
         "visible": False
     }
     ghost_states.append(ghost_state)
+
+hide_ghost_at = 0
+show_ghost_at = 0
 
 # keep the game running while true
 running = True
