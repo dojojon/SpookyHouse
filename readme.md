@@ -34,7 +34,7 @@ Check for mouse clicks on visible ghosts
 Hide found ghost
 Score
 
-### Step
+### Step 9
 Lives and Game Over
 
 ### Step

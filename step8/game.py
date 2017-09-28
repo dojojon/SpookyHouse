@@ -125,7 +125,7 @@ def render_score():
     "Draw the score"
     # draw title text to a surface
     surface = large_font.render("Score:" + str(score), True, (255, 255, 255))
-    screen.blit(surface, (0, 0))
+    screen.blit(surface, (10, 0))
     return
 
 
@@ -158,7 +158,7 @@ ghost_image = pygame.image.load("../assets/ghost.png")
 
 # set up font support
 pygame.font.init()
-large_font = pygame.font.Font("../assets/StartlingFont.ttf", 60)
+large_font = pygame.font.Font("../assets/StartlingFont.ttf", 50)
 
 # Window Positions
 window_positions = [

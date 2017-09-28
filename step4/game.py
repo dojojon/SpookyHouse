@@ -66,7 +66,7 @@ ghost_image = pygame.image.load("../assets/ghost.png")
 
 # set up font support
 pygame.font.init()
-large_font = pygame.font.Font("../assets/StartlingFont.ttf", 60)
+large_font = pygame.font.Font("../assets/StartlingFont.ttf", 50)
 
 # Window Positions
 window_positions = [
