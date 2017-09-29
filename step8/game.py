@@ -46,7 +46,7 @@ def update_ghosts():
     if any(ghost for ghost in ghost_states if ghost["visible"]) != True:
         # and the show_ghost_at is in the past, show a ghost
         if show_ghost_at < pygame.time.get_ticks():
-            ghost_to_turn_on = randint(0, len(window_positions))
+            ghost_to_turn_on = randint(0, len(window_positions) - 1)
             ghost_states[ghost_to_turn_on]["visible"] = True
             hide_ghost_at = randomHideTime()
 
@@ -108,15 +108,15 @@ def checkMouseClick(mouse_position):
                 1], ghost_window[2], ghost_window[3])
 
             if(ghost_clicked):
-                ghost_found()
+                ghost_found(ghost_index)
 
     return
 
 
-def ghost_found():
+def ghost_found(ghost_index):
     "Found a ghost"
-    global score, hide_ghost_at
-    hide_ghost_at = 0
+    global score, ghost_states
+    ghost_states[ghost_index]["visible"] = False
     score = score + 1
     return
 

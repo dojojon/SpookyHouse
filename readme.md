@@ -35,7 +35,13 @@ Hide found ghost
 Score
 
 ### Step 9
-Lives and Game Over
+Lives
+
+### Step 10
+Menu
+
+### Step 11
+Game Over
 
 ### Step
 Fade a ghost in and out

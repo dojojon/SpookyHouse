@@ -35,7 +35,7 @@ def update_ghosts():
     "Update the ghost states"
     # check to see how many ghost we are displaying
     if(any(ghost for ghost in ghost_states if ghost["visible"]) != True):
-        ghost_to_turn_on = randint(0, len(window_positions))
+        ghost_to_turn_on = randint(0, len(window_positions) - 1)
         ghost_states[ghost_to_turn_on]["visible"] = True
     return
 

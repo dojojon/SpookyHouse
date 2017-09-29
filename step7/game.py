@@ -46,7 +46,7 @@ def update_ghosts():
     if any(ghost for ghost in ghost_states if ghost["visible"]) != True:
         # and the show_ghost_at is in the past, show a ghost
         if show_ghost_at < pygame.time.get_ticks():
-            ghost_to_turn_on = randint(0, len(window_positions))
+            ghost_to_turn_on = randint(0, len(window_positions) - 1)
             ghost_states[ghost_to_turn_on]["visible"] = True
             hide_ghost_at = randomHideTime()
 
