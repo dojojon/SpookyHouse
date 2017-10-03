@@ -1,5 +1,4 @@
 import pygame
-from random import randint
 
 
 def render_sky():
@@ -31,24 +30,29 @@ def render_title():
     return
 
 
-def update_ghosts():
-    "Update the ghost states"
-    # check to see how many ghost we are displaying
-    if(any(ghost for ghost in ghost_states if ghost["visible"]) != True):
-        ghost_to_turn_on = randint(0, len(window_positions) - 1)
-        ghost_states[ghost_to_turn_on]["visible"] = True
-    return
-
-
-def render_ghosts():
-    "Draw the ghosts"
-    # Check each of the ghosts
-    for ghost_index in range(0, len(window_positions)):
-        # Check if its visible
-        if(ghost_states[ghost_index]["visible"]):
-            # Draw it
-            render_ghost(ghost_index)
-    return
+def read_ghost_data(asset_path):
+    "Read the positions of the ghosts"
+    result = []
+    # open up the file for reading
+    windows_file = open(asset_path + "windows_data.txt", "r")
+    # read the contents
+    window_lines = windows_file.readlines()
+    # process each line to a list
+    for line in window_lines:
+        line = line.rstrip('\n')
+        line = line.split(',')
+        # create a dictionary for each line
+        line = {
+            'x1': int(line[0]),
+            'y1': int(line[1]),
+            'x2': int(line[2]),
+            'y2': int(line[3])
+        }
+        # add to a list
+        result.append(line)
+    # close the file
+    windows_file.close()
+    return result
 
 
 def render_ghost(ghost):
@@ -56,13 +60,13 @@ def render_ghost(ghost):
     # Get the window position
     ghost_window = window_positions[ghost]
     # Calculate width and height of Window
-    window_width = ghost_window[2] - ghost_window[0]
-    window_height = ghost_window[3] - ghost_window[1]
+    window_width = ghost_window["x2"] - ghost_window["x1"]
+    window_height = ghost_window["y2"] - ghost_window["y1"]
     # Resize the ghost image to the window
     windows_scaled = pygame.transform.scale(
         ghost_image, (window_width, window_height))
     # Draw ghost
-    screen.blit(windows_scaled, (ghost_window[0], ghost_window[1]))
+    screen.blit(windows_scaled, (ghost_window["x1"], ghost_window["y1"]))
     return
 
 
@@ -79,6 +83,9 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 # set up the clock
 clock = pygame.time.Clock()
 
+# folder containing the game assets
+asset_path = "../assets/"
+
 # Loading game assets
 house_image = pygame.image.load(asset_path + "house.png")
 sky_image = pygame.image.load(asset_path + "sky.png")
@@ -90,32 +97,7 @@ pygame.font.init()
 large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 
 # Window Positions
-window_positions = [
-    [182, 385, 	224, 472],
-    [272, 385,	314, 473],
-    [520, 386,	560, 470],
-    [606, 385,	648, 471],
-
-    [184, 275,	224, 348],
-    [273, 275,	314, 348],
-    [395, 275,	436, 345],
-    [518, 275,	561, 348],
-    [606, 275,	646, 348],
-
-    [239, 179,	269, 220],
-    [395, 178,	428, 220],
-    [559, 178,	592, 220],
-
-    [395, 408, 438, 478],
-    [73, 428, 88, 458]]
-
-ghost_states = []
-for ghost_index in range(0, len(window_positions)):
-    ghost_state = {
-        "opactity": 0,
-        "visible": False
-    }
-    ghost_states.append(ghost_state)
+window_positions = read_ghost_data(asset_path)
 
 # keep the game running while true
 running = True
@@ -133,9 +115,6 @@ while running:
     # fill the screen with a solid black colour
     screen.fill((0, 0, 0))
 
-    # Update ghosts
-    update_ghosts()
-
     # draw sky
     render_sky()
 
@@ -143,7 +122,10 @@ while running:
     render_windows()
 
     # render ghost
-    render_ghosts()
+
+    # draw them all
+    for ghost_index in range(0, len(window_positions)):
+        render_ghost(ghost_index)
 
     # draw house
     render_house()

@@ -43,6 +43,9 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 # set up the clock
 clock = pygame.time.Clock()
 
+# folder containing the game assets
+asset_path = "../assets/"
+
 # Loading game assets
 house_image = pygame.image.load(asset_path + "house.png")
 sky_image = pygame.image.load(asset_path + "sky.png")

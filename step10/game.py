@@ -31,14 +31,43 @@ def render_title():
     return
 
 
-def render_menu():
-    "Draw the menu for the game"
-    # draw title text to a surface
-    surface = large_font.render("Click to Play", True, (255, 255, 255))
-    # calculate the x postion to center text
-    screen_x = (screen_width - surface.get_width()) / 2
-    # draw to screen
-    screen.blit(surface, (screen_x, 520))
+def read_ghost_data(asset_path):
+    "Read the positions of the ghosts"
+    result = []
+    # open up the file for reading
+    windows_file = open(asset_path + "windows_data.txt", "r")
+    # read the contents
+    window_lines = windows_file.readlines()
+    # process each line to a list
+    for line in window_lines:
+        line = line.rstrip('\n')
+        line = line.split(',')
+        # create a dictionary for each line
+        line = {
+            'x1': int(line[0]),
+            'y1': int(line[1]),
+            'x2': int(line[2]),
+            'y2': int(line[3])
+        }
+        # add to a list
+        result.append(line)
+    # close the file
+    windows_file.close()
+    return result
+
+
+def render_ghost(ghost):
+    "Draw a ghost"
+    # Get the window position
+    ghost_window = window_positions[ghost]
+    # Calculate width and height of Window
+    window_width = ghost_window["x2"] - ghost_window["x1"]
+    window_height = ghost_window["y2"] - ghost_window["y1"]
+    # Resize the ghost image to the window
+    windows_scaled = pygame.transform.scale(
+        ghost_image, (window_width, window_height))
+    # Draw ghost
+    screen.blit(windows_scaled, (ghost_window["x1"], ghost_window["y1"]))
     return
 
 
@@ -88,21 +117,6 @@ def render_ghosts():
         if(ghost_states[ghost_index]["visible"]):
             # Draw it
             render_ghost(ghost_index)
-    return
-
-
-def render_ghost(ghost):
-    "Draw a ghost"
-    # Get the window position
-    ghost_window = window_positions[ghost]
-    # Calculate width and height of Window
-    window_width = ghost_window[2] - ghost_window[0]
-    window_height = ghost_window[3] - ghost_window[1]
-    # Resize the ghost image to the window
-    windows_scaled = pygame.transform.scale(
-        ghost_image, (window_width, window_height))
-    # Draw ghost
-    screen.blit(windows_scaled, (ghost_window[0], ghost_window[1]))
     return
 
 
@@ -174,6 +188,9 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 # set up the clock
 clock = pygame.time.Clock()
 
+# folder containing the game assets
+asset_path = "../assets/"
+
 # Loading game assets
 house_image = pygame.image.load(asset_path + "house.png")
 sky_image = pygame.image.load(asset_path + "sky.png")
@@ -185,25 +202,6 @@ skull_image = pygame.image.load(asset_path + "skull.png")
 pygame.font.init()
 large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 
-# Window Positions
-window_positions = [
-    [182, 385, 	224, 472],
-    [272, 385,	314, 473],
-    [520, 386,	560, 470],
-    [606, 385,	648, 471],
-
-    [184, 275,	224, 348],
-    [273, 275,	314, 348],
-    [395, 275,	436, 345],
-    [518, 275,	561, 348],
-    [606, 275,	646, 348],
-
-    [239, 179,	269, 220],
-    [395, 178,	428, 220],
-    [559, 178,	592, 220],
-
-    [395, 408, 438, 478],
-    [73, 428, 88, 458]]
 
 ghost_states = []
 for ghost_index in range(0, len(window_positions)):
@@ -219,8 +217,8 @@ show_ghost_at = 0
 score = 0
 lives = 3
 
-# track if we are playing
-is_playing = False
+# Window Positions
+window_positions = read_ghost_data(asset_path)
 
 # keep the game running while true
 running = True
@@ -235,22 +233,13 @@ while running:
             pygame.quit()  # quit the screen
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if(is_playing):
-                checkMouseClick(pygame.mouse.get_pos())
-            else:
-                score = 0
-                lives = 3
-                is_playing = True
+            checkMouseClick(pygame.mouse.get_pos())
 
     # fill the screen with a solid black colour
     screen.fill((0, 0, 0))
 
-    if(is_playing):
-        # Update ghosts
-        update_ghosts()
-
-    if(lives < 1):
-        is_playing = False
+    # Update ghosts
+    update_ghosts()
 
     # draw sky
     render_sky()
@@ -258,9 +247,8 @@ while running:
     # draw windows
     render_windows()
 
-    if(is_playing):
-        # render ghost
-        render_ghosts()
+    # render ghost
+    render_ghosts()
 
     # draw house
     render_house()
@@ -268,18 +256,11 @@ while running:
     # draw title
     render_title()
 
-    if(is_playing):
+    # draw score
+    render_score()
 
-        # draw score
-        render_score()
-
-        # draw lives remaining
-        render_lives()
-
-    else:
-
-        # draw the menu
-        render_menu()
+    # draw lives remaining
+    render_lives()
 
     # update the screen
     pygame.display.update()

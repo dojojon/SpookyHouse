@@ -31,6 +31,46 @@ def render_title():
     return
 
 
+def read_ghost_data(asset_path):
+    "Read the positions of the ghosts"
+    result = []
+    # open up the file for reading
+    windows_file = open(asset_path + "windows_data.txt", "r")
+    # read the contents
+    window_lines = windows_file.readlines()
+    # process each line to a list
+    for line in window_lines:
+        line = line.rstrip('\n')
+        line = line.split(',')
+        # create a dictionary for each line
+        line = {
+            'x1': int(line[0]),
+            'y1': int(line[1]),
+            'x2': int(line[2]),
+            'y2': int(line[3])
+        }
+        # add to a list
+        result.append(line)
+    # close the file
+    windows_file.close()
+    return result
+
+
+def render_ghost(ghost):
+    "Draw a ghost"
+    # Get the window position
+    ghost_window = window_positions[ghost]
+    # Calculate width and height of Window
+    window_width = ghost_window["x2"] - ghost_window["x1"]
+    window_height = ghost_window["y2"] - ghost_window["y1"]
+    # Resize the ghost image to the window
+    windows_scaled = pygame.transform.scale(
+        ghost_image, (window_width, window_height))
+    # Draw ghost
+    screen.blit(windows_scaled, (ghost_window["x1"], ghost_window["y1"]))
+    return
+
+
 def update_ghosts():
     global hide_ghost_at, show_ghost_at
     "Update the ghost states"
@@ -78,49 +118,6 @@ def render_ghosts():
     return
 
 
-def render_ghost(ghost):
-    "Draw a ghost"
-    # Get the window position
-    ghost_window = window_positions[ghost]
-    # Calculate width and height of Window
-    window_width = ghost_window[2] - ghost_window[0]
-    window_height = ghost_window[3] - ghost_window[1]
-    # Resize the ghost image to the window
-    windows_scaled = pygame.transform.scale(
-        ghost_image, (window_width, window_height))
-    # Draw ghost
-    screen.blit(windows_scaled, (ghost_window[0], ghost_window[1]))
-    return
-
-
-def checkMouseClick(mouse_position):
-    "Check if the mouse position is over a visible ghost"
-    for ghost_index in range(0, len(window_positions)):
-
-        # Check if its visible
-        if(ghost_states[ghost_index]["visible"]):
-
-            # get the window for the ghost
-            ghost_window = window_positions[ghost_index]
-
-            # call a function to check if we have clicked ghost
-            ghost_clicked = checkPointInRectangle(mouse_position, ghost_window[0], ghost_window[
-                1], ghost_window[2], ghost_window[3])
-
-            if(ghost_clicked):
-                print("found found found")
-
-    return
-
-
-def checkPointInRectangle(mouse_position, x1, y1, x2, y2):
-    "check to see point is in rectangle"
-    # create a rectangle
-    rect = pygame.Rect((x1, y1), (x2, y2))
-    # check to see if our mouse position is inside the rectangle
-    result = rect.collidepoint(mouse_position)
-    return result
-
 # Define variables
 screen_width = 800
 screen_height = 600
@@ -134,6 +131,9 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 # set up the clock
 clock = pygame.time.Clock()
 
+# folder containing the game assets
+asset_path = "../assets/"
+
 # Loading game assets
 house_image = pygame.image.load(asset_path + "house.png")
 sky_image = pygame.image.load(asset_path + "sky.png")
@@ -143,26 +143,6 @@ ghost_image = pygame.image.load(asset_path + "ghost.png")
 # set up font support
 pygame.font.init()
 large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
-
-# Window Positions
-window_positions = [
-    [182, 385, 	224, 472],
-    [272, 385,	314, 473],
-    [520, 386,	560, 470],
-    [606, 385,	648, 471],
-
-    [184, 275,	224, 348],
-    [273, 275,	314, 348],
-    [395, 275,	436, 345],
-    [518, 275,	561, 348],
-    [606, 275,	646, 348],
-
-    [239, 179,	269, 220],
-    [395, 178,	428, 220],
-    [559, 178,	592, 220],
-
-    [395, 408, 438, 478],
-    [73, 428, 88, 458]]
 
 ghost_states = []
 for ghost_index in range(0, len(window_positions)):
@@ -174,6 +154,9 @@ for ghost_index in range(0, len(window_positions)):
 
 hide_ghost_at = 0
 show_ghost_at = 0
+
+# Window Positions
+window_positions = read_ghost_data(asset_path)
 
 # keep the game running while true
 running = True
@@ -187,8 +170,6 @@ while running:
         if event.type == pygame.QUIT:
             pygame.quit()  # quit the screen
             running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            checkMouseClick(pygame.mouse.get_pos())
 
     # fill the screen with a solid black colour
     screen.fill((0, 0, 0))

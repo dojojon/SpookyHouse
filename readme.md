@@ -17,36 +17,31 @@ Draw a sprite to the screen
     Sky 
 
 ### Step 4
-Draw all ghost
+Read the ghost data
 
 ### Step 5
-Show a random ghost if none is displayed
+Draw all ghost
 
 ### Step 6
+Show a random ghost if none is displayed
+
+### Step 7
 Hide the ghost after a time
 Show a ghost after a time
 
-### Step 7 
+### Step 8 
 Check for mouse clicks 
 Check for mouse clicks on visible ghosts
 
-### Step 8
+### Step 9
 Hide found ghost
 Score
 
-### Step 9
+### Step 10
 Lives
 
-### Step 10
+### Step 11
 Menu
 
-### Step 11
+### Step 12
 Game Over
-
-### Step
-Fade a ghost in and out
-
-### Step 
-Sound
-
-### Setp

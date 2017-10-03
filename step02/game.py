@@ -24,6 +24,9 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 # set up the clock
 clock = pygame.time.Clock()
 
+# folder containing the game assets
+asset_path = "../assets/"
+
 # set up font support
 pygame.font.init()
 large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
