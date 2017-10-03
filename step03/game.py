@@ -44,13 +44,13 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
 
 # Loading game assets
-house_image = pygame.image.load("../assets/house.png")
-sky_image = pygame.image.load("../assets/sky.png")
-windows_image = pygame.image.load("../assets/windows.png")
+house_image = pygame.image.load(asset_path + "house.png")
+sky_image = pygame.image.load(asset_path + "sky.png")
+windows_image = pygame.image.load(asset_path + "windows.png")
 
 # set up font support
 pygame.font.init()
-large_font = pygame.font.Font("../assets/StartlingFont.ttf", 50)
+large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 
 # keep the game running while true
 running = True

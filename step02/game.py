@@ -26,7 +26,7 @@ clock = pygame.time.Clock()
 
 # set up font support
 pygame.font.init()
-large_font = pygame.font.Font("../assets/StartlingFont.ttf", 50)
+large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 
 # keep the game running while true
 running = True
