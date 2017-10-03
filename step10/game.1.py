@@ -70,28 +70,6 @@ def render_ghost(ghost):
     return
 
 
-def render_menu():
-    "Draw the menu for the game"
-    # draw title text to a surface
-    surface = large_font.render("Click to Play", True, (255, 255, 255))
-    # calculate the x postion to center text
-    screen_x = (screen_width - surface.get_width()) / 2
-    # draw to screen
-    screen.blit(surface, (screen_x, 520))
-    return
-
-
-def render_game_over():
-    "Draw the game over"
-    # draw title text to a surface
-    surface = large_font.render("Game Over", True, (255, 255, 255))
-    # calculate the x postion to center text
-    screen_x = (screen_width - surface.get_width()) / 2
-    # draw to screen
-    screen.blit(surface, (screen_x, 300))
-    return
-
-
 def update_ghosts():
     global hide_ghost_at, show_ghost_at, lives
     "Update the ghost states"
@@ -227,10 +205,6 @@ show_ghost_at = 0
 score = 0
 lives = 3
 
-# track if we are playing
-is_playing = False
-is_game_over = False
-
 # Window Positions
 ghosts = read_ghost_data(asset_path)
 
@@ -247,24 +221,13 @@ while running:
             pygame.quit()  # quit the screen
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if(is_playing):
-                checkMouseClick(pygame.mouse.get_pos())
-            else:
-                score = 0
-                lives = 3
-                is_playing = True
-                is_game_over = False
+            checkMouseClick(pygame.mouse.get_pos())
 
     # fill the screen with a solid black colour
     screen.fill((0, 0, 0))
 
-    if(is_playing):
-        # Update ghosts
-        update_ghosts()
-
-    if(lives < 1):
-        is_playing = False
-        is_game_over = True
+    # Update ghosts
+    update_ghosts()
 
     # draw sky
     render_sky()
@@ -272,9 +235,8 @@ while running:
     # draw windows
     render_windows()
 
-    if(is_playing):
-        # render ghost
-        render_ghosts()
+    # render ghost
+    render_ghosts()
 
     # draw house
     render_house()
@@ -282,23 +244,11 @@ while running:
     # draw title
     render_title()
 
-    if(is_playing):
+    # draw score
+    render_score()
 
-        # draw score
-        render_score()
-
-        # draw lives remaining
-        render_lives()
-
-    else:
-
-        # draw the menu
-        render_menu()
-
-    if is_game_over:
-
-        # draw the
-        render_game_over()
+    # draw lives remaining
+    render_lives()
 
     # update the screen
     pygame.display.update()

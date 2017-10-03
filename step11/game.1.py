@@ -81,17 +81,6 @@ def render_menu():
     return
 
 
-def render_game_over():
-    "Draw the game over"
-    # draw title text to a surface
-    surface = large_font.render("Game Over", True, (255, 255, 255))
-    # calculate the x postion to center text
-    screen_x = (screen_width - surface.get_width()) / 2
-    # draw to screen
-    screen.blit(surface, (screen_x, 300))
-    return
-
-
 def update_ghosts():
     global hide_ghost_at, show_ghost_at, lives
     "Update the ghost states"
@@ -229,7 +218,6 @@ lives = 3
 
 # track if we are playing
 is_playing = False
-is_game_over = False
 
 # Window Positions
 ghosts = read_ghost_data(asset_path)
@@ -253,7 +241,6 @@ while running:
                 score = 0
                 lives = 3
                 is_playing = True
-                is_game_over = False
 
     # fill the screen with a solid black colour
     screen.fill((0, 0, 0))
@@ -264,7 +251,6 @@ while running:
 
     if(lives < 1):
         is_playing = False
-        is_game_over = True
 
     # draw sky
     render_sky()
@@ -294,11 +280,6 @@ while running:
 
         # draw the menu
         render_menu()
-
-    if is_game_over:
-
-        # draw the
-        render_game_over()
 
     # update the screen
     pygame.display.update()
