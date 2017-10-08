@@ -164,7 +164,7 @@ screen_height = 600
 # set up pygame
 pygame.init()
 
-# set up a screen 800 pixels wide by 600 high
+# set up a screen
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 # set up the clock

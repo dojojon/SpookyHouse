@@ -96,13 +96,19 @@ pygame.init()
 3. We will be drawing things in pygame, such as the sky, house, ghosts and scores.  To do this we use a screen.  We set up the screen using the following.
 
 ```
-screen = pygame.display.set_mode((800, 600))
+screen_width = 800
+screen_height = 600
+
+screen = pygame.display.set_mode((screen_height, screen_height))
 ```
 
 You can change the game resolution here.  The above code creates a screen 800 pixels wide by 600 pixels high.   If you want to run the low resolution version change the values as shown below.  
 
 ```
-screen = pygame.display.set_mode((600, 480))
+screen_width = 600
+screen_height = 480
+
+screen = pygame.display.set_mode((screen_height, screen_height))
 ```
 
 Most computers will be fine using 800 by 600.
@@ -161,8 +167,13 @@ You can close the game by clicking the close button on the window.
 
 If you are having problems, check out the game.py file in the step2 directory.
 
-### Step 2
-Write some text to the screen
+### Step 2 - Game title
+
+Step 1 set up the pygame library and cleared the screen to black.  Not very exciting, but needed to be done.
+
+In this step we are going add a title to our game.
+
+1.
 
 ### Step 3
 Draw a sprite to the screen
