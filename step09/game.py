@@ -40,14 +40,15 @@ def read_ghost_data(asset_path):
     window_lines = windows_file.readlines()
     # process each line to a list
     for line in window_lines:
-        line = line.rstrip('\n')
-        line = line.split(',')
+        line = line.rstrip("\n")
+        line = line.split(",")
         # create a dictionary for each line
         line = {
-            'x1': int(line[0]),
-            'y1': int(line[1]),
-            'x2': int(line[2]),
-            'y2': int(line[3])
+            "x1": int(line[0]),
+            "y1": int(line[1]),
+            "x2": int(line[2]),
+            "y2": int(line[3]),
+            "visible": False
         }
         # add to a list
         result.append(line)
@@ -58,16 +59,14 @@ def read_ghost_data(asset_path):
 
 def render_ghost(ghost):
     "Draw a ghost"
-    # Get the window position
-    ghost_window = window_positions[ghost]
     # Calculate width and height of Window
-    window_width = ghost_window["x2"] - ghost_window["x1"]
-    window_height = ghost_window["y2"] - ghost_window["y1"]
+    window_width = ghost["x2"] - ghost["x1"]
+    window_height = ghost["y2"] - ghost["y1"]
     # Resize the ghost image to the window
     windows_scaled = pygame.transform.scale(
         ghost_image, (window_width, window_height))
     # Draw ghost
-    screen.blit(windows_scaled, (ghost_window["x1"], ghost_window["y1"]))
+    screen.blit(windows_scaled, (ghost["x1"], ghost["y1"]))
     return
 
 
@@ -77,17 +76,17 @@ def update_ghosts():
 
     # if the hide time is in the past, hide the ghosts
     if hide_ghost_at < pygame.time.get_ticks():
-        for ghost in ghost_states:
+        for ghost in ghosts:
             if ghost["visible"] == True:
                 ghost["visible"] = False
                 show_ghost_at = randomShowTime()
 
-    # if we have no ghosts displayed
-    if any(ghost for ghost in ghost_states if ghost["visible"]) != True:
-        # and the show_ghost_at is in the past, show a ghost
+    # check to see if all ghosts are hidden
+    if(all(ghost["visible"] == False for ghost in ghosts)):
+        # if show_ghost_at is in the past, show a ghost
         if show_ghost_at < pygame.time.get_ticks():
-            ghost_to_turn_on = randint(0, len(window_positions) - 1)
-            ghost_states[ghost_to_turn_on]["visible"] = True
+            ghost_to_turn_on = randint(0, len(ghosts) - 1)
+            ghosts[ghost_to_turn_on]["visible"] = True
             hide_ghost_at = randomHideTime()
 
     return
@@ -110,38 +109,34 @@ def randomShowTime():
 def render_ghosts():
     "Draw the ghosts"
     # Check each of the ghosts
-    for ghost_index in range(0, len(window_positions)):
+    for ghost in ghosts:
         # Check if its visible
-        if(ghost_states[ghost_index]["visible"]):
+        if(ghost["visible"]):
             # Draw it
-            render_ghost(ghost_index)
+            render_ghost(ghost)
     return
 
 
 def checkMouseClick(mouse_position):
     "Check if the mouse position is over a visible ghost"
-    for ghost_index in range(0, len(window_positions)):
+    for ghost in ghosts:
 
         # Check if its visible
-        if(ghost_states[ghost_index]["visible"]):
-
-            # get the window for the ghost
-            ghost_window = window_positions[ghost_index]
+        if(ghost["visible"]):
 
             # call a function to check if we have clicked ghost
-            ghost_clicked = checkPointInRectangle(mouse_position, ghost_window[0], ghost_window[
-                1], ghost_window[2], ghost_window[3])
+            ghost_clicked = checkPoint(mouse_position, ghost)
 
             if(ghost_clicked):
-                ghost_found(ghost_index)
+                ghost_found(ghost)
 
     return
 
 
-def ghost_found(ghost_index):
+def ghost_found(ghost):
     "Found a ghost"
-    global score, ghost_states
-    ghost_states[ghost_index]["visible"] = False
+    global score
+    ghost["visible"] = False
     score = score + 1
     return
 
@@ -154,10 +149,10 @@ def render_score():
     return
 
 
-def checkPointInRectangle(mouse_position, x1, y1, x2, y2):
+def checkPoint(mouse_position, ghost):
     "check to see point is in rectangle"
     # create a rectangle
-    rect = pygame.Rect((x1, y1), (x2, y2))
+    rect = pygame.Rect((ghost["x1"], ghost["y1"]), (ghost["x2"], ghost["y2"]))
     # check to see if our mouse position is inside the rectangle
     result = rect.collidepoint(mouse_position)
     return result
@@ -183,26 +178,21 @@ house_image = pygame.image.load(asset_path + "house.png")
 sky_image = pygame.image.load(asset_path + "sky.png")
 windows_image = pygame.image.load(asset_path + "windows.png")
 ghost_image = pygame.image.load(asset_path + "ghost.png")
+skull_image = pygame.image.load(asset_path + "skull.png")
 
 # set up font support
 pygame.font.init()
 large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 
-ghost_states = []
-for ghost_index in range(0, len(window_positions)):
-    ghost_state = {
-        "opactity": 0,
-        "visible": False
-    }
-    ghost_states.append(ghost_state)
-
+# Hide and shot times
 hide_ghost_at = 0
 show_ghost_at = 0
 
+# Player score
 score = 0
 
 # Window Positions
-window_positions = read_ghost_data(asset_path)
+ghosts = read_ghost_data(asset_path)
 
 # keep the game running while true
 running = True

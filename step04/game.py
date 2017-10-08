@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 
 
 def render_sky():
@@ -30,23 +31,24 @@ def render_title():
     return
 
 
-def read_ghost_data():
+def read_ghost_data(asset_path):
     "Read the positions of the ghosts"
     result = []
     # open up the file for reading
-    windows_file = open('windows_data.txt', 'r')
+    windows_file = open(asset_path + "windows_data.txt", "r")
     # read the contents
     window_lines = windows_file.readlines()
     # process each line to a list
     for line in window_lines:
-        line = line.rstrip('\n')
-        line = line.split(',')
+        line = line.rstrip("\n")
+        line = line.split(",")
         # create a dictionary for each line
         line = {
-            'x1': int(line[0]),
-            'y1': int(line[1]),
-            'x2': int(line[2]),
-            'y2': int(line[3])
+            "x1": int(line[0]),
+            "y1": int(line[1]),
+            "x2": int(line[2]),
+            "y2": int(line[3]),
+            "visible": False
         }
         # add to a list
         result.append(line)
@@ -74,13 +76,15 @@ asset_path = "../assets/"
 house_image = pygame.image.load(asset_path + "house.png")
 sky_image = pygame.image.load(asset_path + "sky.png")
 windows_image = pygame.image.load(asset_path + "windows.png")
+ghost_image = pygame.image.load(asset_path + "ghost.png")
+skull_image = pygame.image.load(asset_path + "skull.png")
 
 # set up font support
 pygame.font.init()
 large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 
 # Window Positions
-window_positions = read_ghost_data(asset_path)
+ghosts = read_ghost_data(asset_path)
 
 # keep the game running while true
 running = True

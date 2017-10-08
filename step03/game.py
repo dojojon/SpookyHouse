@@ -29,7 +29,6 @@ def render_title():
     screen.blit(surface, (screen_x, 0))
     return
 
-
 # Define variables
 screen_width = 800
 screen_height = 600
@@ -50,6 +49,8 @@ asset_path = "../assets/"
 house_image = pygame.image.load(asset_path + "house.png")
 sky_image = pygame.image.load(asset_path + "sky.png")
 windows_image = pygame.image.load(asset_path + "windows.png")
+ghost_image = pygame.image.load(asset_path + "ghost.png")
+skull_image = pygame.image.load(asset_path + "skull.png")
 
 # set up font support
 pygame.font.init()
