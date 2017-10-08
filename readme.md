@@ -1,6 +1,6 @@
 # PyGame Halloween House 
 
-## Requirements
+## Set Up
 
 Python 3 
 Pygame
@@ -45,3 +45,15 @@ Menu
 
 ### Step 12
 Game Over
+
+### Step 13
+
+Other things to try
+
+Make the game harder as the score increases
+Audio and Sound effects
+Animation
+Different Game Assets
+
+
+

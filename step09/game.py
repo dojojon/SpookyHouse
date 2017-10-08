@@ -116,30 +116,6 @@ def render_ghosts():
             render_ghost(ghost)
     return
 
-
-def checkMouseClick(mouse_position):
-    "Check if the mouse position is over a visible ghost"
-    for ghost in ghosts:
-
-        # Check if its visible
-        if(ghost["visible"]):
-
-            # call a function to check if we have clicked ghost
-            ghost_clicked = checkPoint(mouse_position, ghost)
-
-            if(ghost_clicked):
-                print("found ghost")
-    return
-
-
-def checkPoint(mouse_position, ghost):
-    "check to see point is in rectangle"
-    # create a rectangle
-    rect = pygame.Rect((ghost["x1"], ghost["y1"]), (ghost["x2"], ghost["y2"]))
-    # check to see if our mouse position is inside the rectangle
-    result = rect.collidepoint(mouse_position)
-    return result
-
 # Define variables
 screen_width = 800
 screen_height = 600
@@ -186,8 +162,6 @@ while running:
         if event.type == pygame.QUIT:
             pygame.quit()  # quit the screen
             running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            checkMouseClick(pygame.mouse.get_pos())
 
     # fill the screen with a solid black colour
     screen.fill((0, 0, 0))

@@ -128,24 +128,7 @@ def checkMouseClick(mouse_position):
             ghost_clicked = checkPoint(mouse_position, ghost)
 
             if(ghost_clicked):
-                ghost_found(ghost)
-
-    return
-
-
-def ghost_found(ghost):
-    "Found a ghost"
-    global score
-    ghost["visible"] = False
-    score = score + 1
-    return
-
-
-def render_score():
-    "Draw the score"
-    # draw title text to a surface
-    surface = large_font.render("Score:" + str(score), True, (255, 255, 255))
-    screen.blit(surface, (10, 0))
+                print("found ghost")
     return
 
 
@@ -188,9 +171,6 @@ large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 hide_ghost_at = 0
 show_ghost_at = 0
 
-# Player score
-score = 0
-
 # Window Positions
 ghosts = read_ghost_data(asset_path)
 
@@ -229,9 +209,6 @@ while running:
 
     # draw title
     render_title()
-
-    # draw score
-    render_score()
 
     # update the screen
     pygame.display.update()

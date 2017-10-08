@@ -70,26 +70,10 @@ def render_ghost(ghost):
     return
 
 
-def update_ghosts():
-    "Update the ghost states"
-
-    # check to see if all ghosts are hidden
-    if(all(ghost["visible"] == False for ghost in ghosts)):
-        ghost_to_turn_on = randint(0, len(ghosts) - 1)
-        ghosts[ghost_to_turn_on]["visible"] = True
-
-    return
-
-
 def render_ghosts():
-    "Draw the ghosts"
-    # Check each of the ghosts
+    # Draw some ghosts
     for ghost in ghosts:
-        # Check if its visible
-        if(ghost["visible"]):
-            # Draw it
-            render_ghost(ghost)
-    return
+        render_ghost(ghost)
 
 # Define variables
 screen_width = 800
@@ -136,9 +120,6 @@ while running:
 
     # fill the screen with a solid black colour
     screen.fill((0, 0, 0))
-
-    # Update ghosts
-    update_ghosts()
 
     # draw sky
     render_sky()

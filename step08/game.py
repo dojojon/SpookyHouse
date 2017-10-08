@@ -71,39 +71,14 @@ def render_ghost(ghost):
 
 
 def update_ghosts():
-    global hide_ghost_at, show_ghost_at
     "Update the ghost states"
-
-    # if the hide time is in the past, hide the ghosts
-    if hide_ghost_at < pygame.time.get_ticks():
-        for ghost in ghosts:
-            if ghost["visible"] == True:
-                ghost["visible"] = False
-                show_ghost_at = randomShowTime()
 
     # check to see if all ghosts are hidden
     if(all(ghost["visible"] == False for ghost in ghosts)):
-        # if show_ghost_at is in the past, show a ghost
-        if show_ghost_at < pygame.time.get_ticks():
-            ghost_to_turn_on = randint(0, len(ghosts) - 1)
-            ghosts[ghost_to_turn_on]["visible"] = True
-            hide_ghost_at = randomHideTime()
+        ghost_to_turn_on = randint(0, len(ghosts) - 1)
+        ghosts[ghost_to_turn_on]["visible"] = True
 
     return
-
-
-def randomHideTime():
-    "Return when to hide the ghost in ticks"
-    now = pygame.time.get_ticks()
-    now = now + randint(1000, 2000)
-    return now
-
-
-def randomShowTime():
-    "Return when to show the next ghost in ticks"
-    now = pygame.time.get_ticks()
-    now = now + randint(1000, 3000)
-    return now
 
 
 def render_ghosts():
@@ -142,10 +117,6 @@ skull_image = pygame.image.load(asset_path + "skull.png")
 # set up font support
 pygame.font.init()
 large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
-
-# Hide and shot times
-hide_ghost_at = 0
-show_ghost_at = 0
 
 # Window Positions
 ghosts = read_ghost_data(asset_path)

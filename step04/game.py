@@ -1,24 +1,6 @@
 import pygame
 
 
-def render_sky():
-    "Draw the sky"
-    screen.blit(sky_image, (0, 0))
-    return
-
-
-def render_windows():
-    "Draw the window back grounds"
-    screen.blit(windows_image, (0, 0))
-    return
-
-
-def render_house():
-    "Draw the house"
-    screen.blit(house_image, (0, 0))
-    return
-
-
 def render_title():
     "Draw the title of the game in the center of the screen"
     # draw title text to a surface
@@ -45,13 +27,6 @@ clock = pygame.time.Clock()
 # folder containing the game assets
 asset_path = "../assets/"
 
-# Loading game assets
-house_image = pygame.image.load(asset_path + "house.png")
-sky_image = pygame.image.load(asset_path + "sky.png")
-windows_image = pygame.image.load(asset_path + "windows.png")
-ghost_image = pygame.image.load(asset_path + "ghost.png")
-skull_image = pygame.image.load(asset_path + "skull.png")
-
 # set up font support
 pygame.font.init()
 large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
@@ -71,15 +46,6 @@ while running:
 
     # fill the screen with a solid black colour
     screen.fill((0, 0, 0))
-
-    # draw sky
-    render_sky()
-
-    # draw windows
-    render_windows()
-
-    # draw house
-    render_house()
 
     # draw title
     render_title()
