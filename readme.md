@@ -4,7 +4,7 @@ We are going to learn how to program a "Spooky House" halloween game using Pytho
 
 ![Spooky House Screen Shot](/Game_Screen_Shot.png?raw=true "Spooky House")
 
-Whilst you can follow this tutorial without any programming or Python experience, but it's a good idea to have completed through the Beginners Python (http://kata.coderdojo.com/wiki/Beginner_Python) and Intermediate Python (http://kata.coderdojo.com/wiki/Intermediate_Python) Sushi Cards if you have no experience.
+You can follow this tutorial without any programming or Python experience, but it's a good idea to have completed through the Beginners Python (http://kata.coderdojo.com/wiki/Beginner_Python) and Intermediate Python (http://kata.coderdojo.com/wiki/Intermediate_Python) Sushi Cards if you have no experience.
 
 ## Getting Set Up
 
