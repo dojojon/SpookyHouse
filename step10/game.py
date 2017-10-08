@@ -71,7 +71,7 @@ def render_ghost(ghost):
 
 
 def update_ghosts():
-    global hide_ghost_at, show_ghost_at, lives
+    global hide_ghost_at, show_ghost_at
     "Update the ghost states"
 
     # if the hide time is in the past, hide the ghosts
@@ -80,8 +80,6 @@ def update_ghosts():
             if ghost["visible"] == True:
                 ghost["visible"] = False
                 show_ghost_at = randomShowTime()
-                # we did not click in time :-(
-                lives = lives - 1
 
     # check to see if all ghosts are hidden
     if(all(ghost["visible"] == False for ghost in ghosts)):
@@ -151,17 +149,6 @@ def render_score():
     return
 
 
-def render_lives():
-    "Draw a skull for each life"
-    skull_width = skull_image.get_rect().width
-    life = lives
-    while(life > 0):
-        skull_x = screen_width - (skull_width + 10) * (life)
-        screen.blit(skull_image, (skull_x, 5))
-        life = life - 1
-    return
-
-
 def checkPoint(mouse_position, ghost):
     "check to see point is in rectangle"
     # create a rectangle
@@ -201,9 +188,8 @@ large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 hide_ghost_at = 0
 show_ghost_at = 0
 
-# Player score and lives
+# Player score
 score = 0
-lives = 3
 
 # Window Positions
 ghosts = read_ghost_data(asset_path)
@@ -246,9 +232,6 @@ while running:
 
     # draw score
     render_score()
-
-    # draw lives remaining
-    render_lives()
 
     # update the screen
     pygame.display.update()
