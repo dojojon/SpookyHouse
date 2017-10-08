@@ -136,6 +136,8 @@ This code is also used later to check for mouse clicks.
             running = False
 ```
 
+You can close the game by clicking the close button on the window.
+
 6.  Next we are going to fill our screen with solid black. Add the following to the loop as well.
 
 ``` 
@@ -151,7 +153,13 @@ This code is also used later to check for mouse clicks.
 
 9. Last of all we need to call the clock.tick() function.  This will limit the game to 60 frames per second.
 
+```
+    clock.tick(60)
+```
 
+10. Try running the game again.  It should run without error.  
+
+If you are having problems, check out the game.py file in the step2 directory.
 
 ### Step 2
 Write some text to the screen
