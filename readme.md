@@ -24,13 +24,13 @@ can use another editor if you're more familiar with it. Or just like it better.
 make sure that everything is working and that you know how to run a
 Python program. Follow these steps:
 
-* Make a new folder for your Spooky House game.
-* Open your text editor and create a new file. Save it into the folder
+  * Make a new folder for your Spooky House game.
+  * Open your text editor and create a new file. Save it into the folder
 you just made and call it game.py.
-* Open the command line on your computer (called command prompt
+  * Open the command line on your computer (called command prompt
 on Windows and Terminal on Mac) and navigate to your folder using
 the cd command.
- * Once you've opened your folder in the command line, you're ready
+  * Once you've opened your folder in the command line, you're ready
 to try running this blank file with this command, entered into the
 command line:
 
@@ -45,8 +45,8 @@ the command.
 
 5. Next we need to install the PyGame (http://Pygame.org) library.
 
-* Open the command line on your computer
-* Run the following command to install the pygame library
+  * Open the command line on your computer
+  * Run the following command to install the pygame library
 
 ```
 python3 -m pip install pygame --user
