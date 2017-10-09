@@ -163,9 +163,7 @@ You can close the game by clicking the close button on the window.
     clock.tick(60)
 ```
 
-10. Try running the game again.  It should run without error.  
-
-If you are having problems, check out the game.py file in the step2 directory.
+10. Try running the game again.  It should run without error.  If you are having problems, check out the game.py file in the step2 directory.
 
 ### Step 2 - Game title
 
@@ -224,7 +222,14 @@ def render_title():
     screen.blit(surface, (screen_x, 0))
     return
 ```
-9.  Try running the game again.  It should look like this.  If it does not run or does not look like this, check your code and try again.  You can always compare the starting file for step 03 if you need help.
+
+9.  With our function complete we need to add the code to call it.  Between the ```screen.fill((0, 0, 0))``` and ```pygame.display.update()``` add the following to call our function.
+
+```
+    render_title()
+```
+
+10.  Try running the game again.  It should look like this.  If it does not run or does not look like this, check your code and try again.  You can always compare the starting file for step 03 if you need help.
 
 ![Spooky House Step 2 Screen Shot](/screenshots/step2.png?raw=true "Step 2")
 
