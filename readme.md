@@ -167,7 +167,7 @@ You can close the game by clicking the close button on the window.
 
 ### Step 2 - Game title
 
-Step 1 set up the pygame library and cleared the screen to black.  Not very exciting, but needed to be done.
+Step 1 set up the pygame library and cleared the screen to black in the game loop.  Not very exciting, but needed to be done.
 
 In this step we are going add a title to our game using a font.  Font are definitions of how text is displayed on computers.  If you have used a word processor you will have likely seen all the different fonts that are installed on your computer.
 
@@ -189,7 +189,7 @@ large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 
 ```
 
-4. Next we are going add a function we can call to draw the title to the screen.  You can find out more about function in the intermediate python course.  Under the import statement add the following:
+4. Next we are going add a function we can call to draw the title to the screen.  In game programming drawing is often referred to as rendering, so lets name our function starting with the word render.  We will do this for all the functions that are drawing stuff.  You can find out more about function in the intermediate python course.  Under the import statement add the following:
 
 ```
 def render_title():
@@ -211,6 +211,7 @@ def render_title():
 
 ```
     screen.blit(surface, (screen_x, 0))
+    return
 ```
 
 8.  Your function should look like this.
@@ -231,12 +232,54 @@ def render_title():
 
 10.  Try running the game again.  It should look like this.  If it does not run or does not look like this, check your code and try again.  You can always compare the starting file for step 03 if you need help.
 
-![Spooky House Step 2 Screen Shot](/screenshots/step2.png?raw=true "Step 2")
+![Spooky House Step 2 Screen Shot](/screenshots/step02.png?raw=true "Step 2")
 
 ### Step 3
-Draw a sprite to the screen
-    House
-    Sky 
+Well its a start, lets draw the sky, windows and house in this step.  We are going to draw these in layers starting with the sky, then the windows and last of all the house.  This will allow us to draw the ghosts later on between the windows and the house.
+
+1.  As in step 2 we need to load up the image assets before we can use them.  As we know we are going to need the ghost and skull assets later on lets load them into variables at the same time.  Add the following under the ```asset_path = "../assets/"``` statement.
+
+```
+# Loading game assets
+house_image = pygame.image.load(asset_path + "house.png")
+sky_image = pygame.image.load(asset_path + "sky.png")
+windows_image = pygame.image.load(asset_path + "windows.png")
+ghost_image = pygame.image.load(asset_path + "ghost.png")
+skull_image = pygame.image.load(asset_path + "skull.png")
+```
+
+2.  Lets add a function to draw the sky.  Under our import statement at the top of the file add the ```render_sky()``` function.  It draws the the sky_image surface to the screen positioning the image at the top left of the screen `(0,0)`.
+
+```
+def render_sky():
+    screen.blit(sky_image, (0, 0))
+    return
+```
+3.  We need similar function for the windows and the house.  Add the following after the ```def render_sky()``` function.
+
+```
+def render_windows():
+    screen.blit(windows_image, (0, 0))
+    return
+
+def render_house():
+    screen.blit(house_image, (0, 0))
+    return
+```
+
+4.  Functions don't run unless they are called, so lets call them.  We need to draw the sky first, then the windows, followed by the house and last of all the title.  Add the following to our game loop before the ```   render_title()``` function call.
+
+```
+    render_sky()
+
+    render_windows()
+
+    render_house()
+```
+
+5.  Run the game, it should look like this.   
+
+![Spooky House Step 3 Screen Shot](/screenshots/step03.png?raw=true "Step 3")
 
 ### Step 4
 Read the ghost data
