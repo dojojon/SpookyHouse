@@ -2,7 +2,7 @@
 
 We are going to learn how to program a "Spooky House" halloween game using Python and Pygame.
 
-![Spooky House Screen Shot](/Game_Screen_Shot.png?raw=true "Spooky House")
+![Spooky House Screen Shot](/screenshots/Game_Screen_Shot.png?raw=true "Spooky House")
 
 You can follow this tutorial without any programming or Python experience, but it's a good idea to have completed through the Beginners Python (http://kata.coderdojo.com/wiki/Beginner_Python) and Intermediate Python (http://kata.coderdojo.com/wiki/Intermediate_Python) Sushi Cards if you have no experience.
 
@@ -171,9 +171,62 @@ If you are having problems, check out the game.py file in the step2 directory.
 
 Step 1 set up the pygame library and cleared the screen to black.  Not very exciting, but needed to be done.
 
-In this step we are going add a title to our game.
+In this step we are going add a title to our game using a font.  Font are definitions of how text is displayed on computers.  If you have used a word processor you will have likely seen all the different fonts that are installed on your computer.
 
-1.
+
+1. To draw text in the game we need to load a font.  First lets create a variable that points to the directory contain all the assets we are going to use in the game. Add the following just above the ```running = True``` line.
+
+```
+asset_path = "../assets/"
+```
+2. Next we need to initialize the pygame font module.  Add the following line next
+
+```
+pygame.font.init()
+```
+3. So lets load a font and store it in a variable we can use later whenever we need to display some text.  Add this line.
+
+```
+large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
+
+```
+
+4. Next we are going add a function we can call to draw the title to the screen.  You can find out more about function in the intermediate python course.  Under the import statement add the following:
+
+```
+def render_title():
+```
+
+5. This has defined a function we can call from later in our code.  Next add the following line to create a surface
+
+```
+    surface = large_font.render("Spooky House", True, (255, 255, 255))
+``` 
+
+6.  Lets calculate a position on the screen to draw the title.  We do this by subtracting the width of the surface from the screen width and dividing it by 2.  We will store the result in a variable called ```screen_x```
+
+```
+    screen_x = (screen_width - surface.get_width()) / 2
+```
+
+7.  Last of all we need to blit (draw) our surface to the screen.  We do this with the following line.
+
+```
+    screen.blit(surface, (screen_x, 0))
+```
+
+8.  Your function should look like this.
+
+```
+def render_title():
+    surface = large_font.render("Spooky House", True, (255, 255, 255))
+    screen_x = (screen_width - surface.get_width()) / 2
+    screen.blit(surface, (screen_x, 0))
+    return
+```
+9.  Try running the game again.  It should look like this.  If it does not run or does not look like this, check your code and try again.  You can always compare the starting file for step 03 if you need help.
+
+![Spooky House Step 2 Screen Shot](/screenshots/step2.png?raw=true "Step 2")
 
 ### Step 3
 Draw a sprite to the screen
