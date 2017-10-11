@@ -437,7 +437,7 @@ def render_ghosts():
 
 8.  Try running the game now.  It should look like this.  
 
-![Spooky House Step 5 Screen Shot](/screenshots/step04.png?raw=true "Step 5 All the ghosts")
+![Spooky House Step 5 Screen Shot](/screenshots/step05.png?raw=true "Step 5 All the ghosts")
 
 
 
