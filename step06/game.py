@@ -56,6 +56,26 @@ def read_ghost_data(asset_path):
     windows_file.close()
     return result
 
+
+def render_ghost(ghost):
+    "Draw a ghost"
+    # Calculate width and height of Window
+    ghost_width = ghost["x2"] - ghost["x1"]
+    ghost_height = ghost["y2"] - ghost["y1"]
+    # Resize the ghost image to the window
+    ghost_scaled = pygame.transform.scale(
+        ghost_image, (ghost_width, ghost_height))
+    # Draw ghost
+    screen.blit(ghost_scaled, (ghost["x1"], ghost["y1"]))
+    return
+
+
+def render_ghosts():
+    # Draw some ghosts
+    for ghost in ghosts:
+        render_ghost(ghost)
+
+
 # Define variables
 screen_width = 800
 screen_height = 600
@@ -107,6 +127,9 @@ while running:
 
     # draw windows
     render_windows()
+
+    # draw ghosts
+    render_ghosts()
 
     # draw house
     render_house()

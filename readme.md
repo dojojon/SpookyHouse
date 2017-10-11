@@ -380,11 +380,66 @@ def read_ghost_data(asset_path):
 ghosts = read_ghost_data(asset_path)
 ```
 
-14.  Wow thats a lot to take in.  Try running the program now.  It should run without error.  If not, check the starting code for the next step if you need help.
+14.  Wow thats a lot to take in.  Try running the program now.  It should run without error.  If not, check the starting code for the next step if you need help.  
 
 
-### Step 5
-Draw all ghost
+### Step 5 - Draw some ghosts
+
+Step 4 loaded the ghost data for the positions we will draw the ghosts on the screen.  This dictionary for each ghost containing the window positions and a key for the visibility of the ghost.  In this step we will add a function to draw an individual ghost.  To test this we will add a function to loop over all the ghosts in the list and draw them.
+
+1. Under the ```def read_ghost_data(asset_path):``` add a new function that will draw a single ghost we pass into it.
+
+```
+def render_ghost(ghost):
+```
+
+2. Our windows are different sizes.  Rather than have different sized ghosts we can use the pygame library to transform our ghost image before we blit it to the screen.  Lets calculate the width and height.
+
+``` 
+    ghost_width = ghost["x2"] - ghost["x1"]
+    ghost_height = ghost["y2"] - ghost["y1"]
+```
+
+3. With the width and height we can call the pygame.transform.scale function to resize the ghost before we blit it. 
+```
+    ghost_scaled = pygame.transform.scale(ghost_image, (ghost_width, ghost_height))
+```
+
+4. Lets draw the scaled ghost to the screen, using the top left (x1, y1) coordinates to position on the screen.  We can also end the function using the return statement.
+
+```
+    screen.blit(ghost_scaled, (ghost["x1"], ghost["y1"]))
+    return
+```
+
+5.  The function should look like this.
+
+```
+def render_ghost(ghost):
+    ghost_width = ghost["x2"] - ghost["x1"]
+    ghost_height = ghost["y2"] - ghost["y1"]
+    ghost_scaled = pygame.transform.scale(ghost_image, (ghost_width, ghost_height))
+    screen.blit(ghost_scaled, (ghost["x1"], ghost["y1"]))
+    return
+```
+
+6.  Lets add another function to draw all the ghosts.  Add this below the ```def render_ghost(ghost):``` function we just added.  As you can see the function uses a for loop and calls the ```def render_ghost(ghost):``` with each ghost.
+
+```
+def render_ghosts():
+    # Draw some ghosts
+    for ghost in ghosts:
+        render_ghost(ghost)
+    return
+```
+
+7.  Last of all we need to call the ```def render_ghosts():``` function.  Remember in step3 we added functions to draw the sky, windows and house textures.  We need to add a call to ```def render_ghosts():``` after the ```render_windows()``` call and before the ``` render_house()``` call.
+
+8.  Try running the game now.  It should look like this.  
+
+![Spooky House Step 5 Screen Shot](/screenshots/step04.png?raw=true "Step 5 All the ghosts")
+
+
 
 ### Step 6
 Show a random ghost if none is displayed
