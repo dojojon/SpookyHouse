@@ -35,7 +35,7 @@ def read_ghost_data(asset_path):
     "Read the positions of the ghosts"
     result = []
     # open up the file for reading
-    windows_file = open(asset_path + "windows_data.txt", "r")
+    windows_file = open(asset_path + "ghost_data.txt", "r")
     # read the contents
     window_lines = windows_file.readlines()
     # process each line to a list
@@ -147,7 +147,7 @@ large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 hide_ghost_at = 0
 show_ghost_at = 0
 
-# Window Positions
+# Ghost Positions
 ghosts = read_ghost_data(asset_path)
 
 # keep the game running while true

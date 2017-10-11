@@ -234,7 +234,7 @@ def render_title():
 
 ![Spooky House Step 2 Screen Shot](/screenshots/step02.png?raw=true "Step 2")
 
-### Step 3
+### Step 3 - Draw the Sky, Windows and House
 Well its a start, lets draw the sky, windows and house in this step.  We are going to draw these in layers starting with the sky, then the windows and last of all the house.  This will allow us to draw the ghosts later on between the windows and the house.
 
 1.  As in step 2 we need to load up the image assets before we can use them.  As we know we are going to need the ghost and skull assets later on lets load them into variables at the same time.  Add the following under the ```asset_path = "../assets/"``` statement.
@@ -281,8 +281,107 @@ def render_house():
 
 ![Spooky House Step 3 Screen Shot](/screenshots/step03.png?raw=true "Step 3")
 
-### Step 4
-Read the ghost data
+### Step 4 - Load the ghost data
+
+Take a look at the house and count the windows.  You should see that it has 14.  Each window is a rectangle.  So we have a choice.  We could write the position of each window into the game code.  Thats one option, but imagine if we wanted to have a different house for harder levels than our code would become bloated with lots of data.  Its good practice to move this data into a file we can load when the program runs.  Thats the plan for this step.
+
+If you want to find out more about read and saving files check out the Intermediate Python Sushi cards.
+
+1. Lets take a look at our data.  In the assets directory you will find a file named ```ghost_data.txt```.  Open this with an editor and take a look.
+
+2. Each line in the file contains the screen position of a window where we will draw a ghost.  The first number is the x position of the top left corner.  The second is y position of the top left corner.  The next two are the x and y of the bottom right. 
+
+![Spooky House Step 4 Screen Shot](/screenshots/step04.png?raw=true "Step 4 Window Positions")
+
+3. Lets add a function to read in the ghost data.  We will then be able to use this in the game.  Add a function at the just under the end of the ```def render_title()``` function.  This function will take an argument called asset_path that contains a string for the asset directory.
+
+```
+def read_ghost_data(asset_path):
+
+```
+4.  This function is going to return a list of ghost positions.  Add a variable to the function called ```result``` and set it to an empty list.
+
+```
+    result = []
+```    
+
+5.  Next  we are going to open and read the contents of the ```ghost_data.txt``` file.  The readlines() function will put each line of the file into a list.
+
+```
+    windows_file = open(asset_path + "ghost_data.txt", "r")
+    window_lines = windows_file.readlines()
+```   
+
+6.  The window_lines list conatins one line for each window in the file.  Lets use a for loop to process each one.
+
+```
+    for line in window_lines:
+```
+
+7.  Each line ends with a special character called a new line. We need to remove this.
+```
+        line = line.rstrip("\n")
+```
+
+8.  Each number is seperated by a comma.  We can split this line into another list using the following:   
+```
+        line = line.split(",")
+```
+
+9.  To make accessing the date easier in our code, we will put the data into a dictionary.  We will also add ```visible``` and set this to ```False```.  We will use this to check if we should draw a ghost or not.
+
+```
+        line = {
+            "x1": int(line[0]),
+            "y1": int(line[1]),
+            "x2": int(line[2]),
+            "y2": int(line[3]),
+            "visible": False
+        }
+```
+
+10.  Almost there. Add the line to the results list.
+```
+        # add to a list
+        result.append(line)
+```
+
+11. Finally lets close the file and return the data from the function.
+   
+```
+    windows_file.close()
+    return result
+```
+
+12.  The function should look like this.  
+
+```
+def read_ghost_data(asset_path):
+    result = []
+    windows_file = open(asset_path + "ghost_data.txt", "r")
+    window_lines = windows_file.readlines()
+    for line in window_lines:
+        line = line.rstrip("\n")
+        line = line.split(",")
+        line = {
+            "x1": int(line[0]),
+            "y1": int(line[1]),
+            "x2": int(line[2]),
+            "y2": int(line[3]),
+            "visible": False
+        }
+        result.append(line)
+    windows_file.close()
+    return result
+```
+13. We can call the function in our code to load the data into the ghosts variable.  Add the following before the ```running = True``` variable we added earlier.
+
+```
+ghosts = read_ghost_data(asset_path)
+```
+
+14.  Wow thats a lot to take in.  Try running the program now.  It should run without error.  If not, check the starting code for the next step if you need help.
+
 
 ### Step 5
 Draw all ghost
