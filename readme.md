@@ -69,7 +69,20 @@ A game asset is the images, fonts and sound effects that are used to make the co
 The assets directory contains all the assets required for the game.  It also contains a working directory that contains some of the source assets.
 
 ### Low Screen Resolutions
-The assets_low directory contains a set of assets from running the game at a lower screen resolution.  You will need to change screen resolution set up in step 1 and the `asset_path` variable added in step 3.  Details in the instructions
+The ```assets_low``` directory contains a set of assets from running the game at a lower screen resolution.  You will need to change screen resolution set up in step 1 and the `asset_path` variable added in step 3.  
+
+Change the variables as follows:
+
+```
+screen_width = 640
+screen_height = 480
+```
+
+and
+
+```
+asset_path = "../assets_low/"
+```
 
 ### Code comments
 Python uses # to indicate the text following it is a comment.  Comments are useful in helping you understand the code.  The starting files contain comments to help you understand what its doing.  It is up to you to decide if you want to write comments in your own code.
@@ -105,7 +118,7 @@ screen = pygame.display.set_mode((screen_height, screen_height))
 You can change the game resolution here.  The above code creates a screen 800 pixels wide by 600 pixels high.   If you want to run the low resolution version change the values as shown below.  
 
 ```
-screen_width = 600
+screen_width = 640
 screen_height = 480
 
 screen = pygame.display.set_mode((screen_height, screen_height))
