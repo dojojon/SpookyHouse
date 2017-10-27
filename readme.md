@@ -453,7 +453,6 @@ def render_ghosts():
 ![Spooky House Step 5 Screen Shot](/screenshots/step05.png?raw=true "Step 5 All the ghosts")
 
 
-
 ### Step 6
 Show a random ghost if none is displayed
 
