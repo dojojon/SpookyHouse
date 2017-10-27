@@ -128,8 +128,6 @@ def checkMouseClick(mouse_position):
 
             if(ghost_clicked):
                 ghost_found(ghost)
-                got_a_ghost = True
-
     return
 
 
