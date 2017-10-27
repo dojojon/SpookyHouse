@@ -112,7 +112,7 @@ pygame.init()
 screen_width = 800
 screen_height = 600
 
-screen = pygame.display.set_mode((screen_height, screen_height))
+screen = pygame.display.set_mode((screen_width, screen_height))
 ```
 
 You can change the game resolution here.  The above code creates a screen 800 pixels wide by 600 pixels high.   If you want to run the low resolution version change the values as shown below.  
@@ -121,7 +121,7 @@ You can change the game resolution here.  The above code creates a screen 800 pi
 screen_width = 640
 screen_height = 480
 
-screen = pygame.display.set_mode((screen_height, screen_height))
+screen = pygame.display.set_mode((screen_width, screen_height))
 ```
 
 Most computers will be fine using 800 by 600.
@@ -453,8 +453,76 @@ def render_ghosts():
 ![Spooky House Step 5 Screen Shot](/screenshots/step05.png?raw=true "Step 5 All the ghosts")
 
 
-### Step 6
-Show a random ghost if none is displayed
+### Step 6  Random Ghosts
+
+So in this game we will show a ghost if none are visible.  Lets add a function called ```update_ghosts()``` to make this happen.
+1.  At the top of the game.py file we need to import a random number function.  Add the following under the ```import pygame```.
+
+```
+from random import randint
+```
+
+2.  Add a function near the ```render_ghosts()``` function
+```
+def update_ghosts():
+```
+
+3. We area going to use the visible attribute of the ghost data to store if a ghost is visible or not.  We only want to set this to true if all of the ghosts are hidden.  We can use the build in all function to do this.  You find out more about the all function here [https://docs.python.org/2/library/functions.html#all].  We can use the all function to return ```True``` if all the ghosts are not visible.
+
+```
+    if(all(ghost["visible"] == False for ghost in ghosts)):
+```
+
+4.  If no ghost is visible, then use another function to pick one at random and make if visible.  
+
+```
+        ghost_to_turn_on = randint(0, len(ghosts) - 1)
+        ghosts[ghost_to_turn_on]["visible"] = True
+```
+
+5. Last of all lets close the function by returning,
+```
+    return
+```
+
+6.  The function should look like this.
+
+```
+def update_ghosts():
+    if(all(ghost["visible"] == False for ghost in ghosts)):
+        ghost_to_turn_on = randint(0, len(ghosts) - 1)
+        ghosts[ghost_to_turn_on]["visible"] = True
+    return
+```
+
+7.  We need to call this function in out game loop.  Below the screen.fill((0,0,0)) call, call our new function.
+
+```
+    update_ghosts()
+```
+
+8.  Try running the game now.  Strange all the ghosts are still showing.  Thats because we need to add an if statement to only render ghosts if they are visible.  Go to the ```render_ghosts()``` function.  It should look like this.
+
+```
+def render_ghosts():
+    # Draw some ghosts
+    for ghost in ghosts:
+        render_ghost(ghost)
+
+```
+
+9.  Add an if statement to only call the render_ghost() function if the ghost is visible.
+
+```
+def render_ghosts():
+    # Draw some ghosts
+    for ghost in ghosts:
+        if ghost["visible"]:
+            render_ghost(ghost)
+```
+
+10. Try running it again, now you should see a single ghost being drawn.  Try stopping and starting the game a few times to see a different ghost drawn. 
+
 
 ### Step 7
 Hide the ghost after a time
