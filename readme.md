@@ -10,28 +10,18 @@ You can follow this tutorial without any programming or Python experience, but i
 
 1.  Before you can start coding, you'll need to setup your computer to writePython. You'll need to have Python and a text editor installed, and know how to run a Python program.
 
-2. To install Python, go to http://dojo.soy/py-setup and click on the Download
-Python 3 button. There will be some other numbers after the 3, but they
-change too often for me to include them. Don't worry about them.
-Once the installer has downloaded, start it and click through it, accepting
-the default choices.
+2. To install Python, go to http://dojo.soy/py-setup and click on the Download Python 3 button. There will be some other numbers after the 3, but they change too often for me to include them. Don't worry about them. Once the installer has downloaded, start it and click through it, accepting the default choices.
 
-3. Now you need to get a text editor, to write your Python in. We
-recommend Atom, which you can download from http://atom.io, but you
-can use another editor if you're more familiar with it. Or just like it better.
+3. Now you need to get a text editor, to write your Python in. We recommend Atom, which you can download from http://atom.io, but you can use another editor if you're more familiar with it. 
 
-4. Once you have both of these setup, you're ready to go. You just need to
-make sure that everything is working and that you know how to run a
-Python program. Follow these steps:
+4. Once you have both of these setup, you're ready to go. You just need to make sure that everything is working and that you know how to run a
+Python program. 
+
+Follow these steps:
   * Make a new folder for your Spooky House game.
-  * Open your text editor and create a new file. Save it into the folder
-you just made and call it game.py.
-  * Open the command line on your computer (called command prompt
-on Windows and Terminal on Mac) and navigate to your folder using
-the cd command.
-  * Once you've opened your folder in the command line, you're ready
-to try running this blank file with this command, entered into the
-command line:
+  * Open your text editor and create a new file. Save it into the folder you just made and call it game.py.
+  * Open the command line on your computer (called command prompt on Windows and Terminal on Mac) and navigate to your folder using the cd command.
+  * Once you've opened your folder in the command line, you're ready to try running this blank file with this command, entered into the command line:
 
 ```
 python3 game.py
@@ -60,7 +50,7 @@ If it works, you are ready to go!
 
 ## Making the Game
 
-Instructions on making the game have been broken up into small steps.  You should start at step 1 with an empty game.py file.  Each step has instructions documented below.  Each step has a starting file that you can use if you have got lost.  You can use these to compare your code to a working version.  The staring files are contained in the folders named step00 through step12.
+Instructions on making the game have been broken up into small steps.  You should start at step 1 with an empty game.py file.  Each step has instructions documented below.  Each step has a starting file that you can use if you have got lost.  You can use these to compare your code to a working version.  The staring files are contained in the folders named step00 through step11.  The step 12 folder contains the final game.
 
 ### Game Assets
 
@@ -826,11 +816,13 @@ def render_game_over():
 
 ## Other things to try
 
+We made a game, its not the greatest game but hopefully these steps have given you an idea of how to break up building a game into smaller functions.  Here are some ideas for expanding the game we have created.
 
-Make the game harder as the score increases
-Audio and Sound effects
-Animation
-Different Game Assets
+* Audio and Sound effects
+* Make the game harder as the score increases
+* Add a menu to allow the game to be restarted once the game is over.
+* Animation
+* Different Game Assets, make an easter game for example.
 
 
 
