@@ -60,7 +60,7 @@ If it works, you are ready to go!
 
 ## Making the Game
 
-Instructions on making the game have been broken up into small steps.  You should start at step 1 with an empty game.py file.  Each step has instructions documented below.  Each step has a starting file that you can use if you have got lost.  You can use these to compare your code to a working version.  The staring files are contained in the folders named step00 through step13.
+Instructions on making the game have been broken up into small steps.  You should start at step 1 with an empty game.py file.  Each step has instructions documented below.  Each step has a starting file that you can use if you have got lost.  You can use these to compare your code to a working version.  The staring files are contained in the folders named step00 through step12.
 
 ### Game Assets
 
@@ -781,16 +781,51 @@ def update_ghosts():
     return
 ```
 
-9.  Try running the game.  As long as you click the ghost in time, your lives should remain.  Try not clicking a ghost to see the lives run down.  Let them run down to zero.  As you can see the game as problem.  You can still continue playing with no lives.  We will fix that in the next step
+9.  Try running the game.  As long as you click the ghost in time, your lives should remain.  Try not clicking a ghost to see the lives run down.  Let them run down to zero.  As you can see the game as problem.  You can still continue playing with no lives.  We will fix that in the next step.
 
-### Step 11
-Game Over
+### Step 11 Game Over
 
-### Step 12
-Menu
+The plan for game over is as follows, add a variable that we will set to True when the lives reach zero.  If this variable if True, we will render a message in the center of screen to let the player know.
 
-### Step 13
-Other things to try
+1.  Add the following near the ```running = True``` statement.
+
+```
+game_over = False
+```
+
+2.  Next we will add a function to render the game over message.  We've done similar for the title, but in this case we only want to render the message if ```game_over``` is ```True``` 
+
+```
+def render_game_over():
+    "Draw the game over"
+
+    if game_over:
+        # draw title text to a surface
+        surface = large_font.render("Game Over", True, (255, 255, 255))
+        # calculate the x postion to center text
+        screen_x = (screen_width - surface.get_width()) / 2
+        # draw to screen
+        screen.blit(surface, (screen_x, 300))
+    return
+```
+
+3. Next, we need to check the number of lives.  If its zero or less, then we set ```game_over``` to ```False```.  Add the following check in the game loop, near the ```update_ghosts()``` call.
+
+```
+    if lives < 1:
+        game_over = True
+```
+
+4. Last of all, we only need to update the ghosts if we are playing.  Use an if statement to do that in the game loop.
+
+```
+    # Update ghosts
+    if game_over == False:
+        update_ghosts()
+```
+
+## Other things to try
+
 
 Make the game harder as the score increases
 Audio and Sound effects

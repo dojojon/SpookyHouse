@@ -70,6 +70,13 @@ def render_ghost(ghost):
     return
 
 
+def render_ghosts():
+    # Draw some ghosts
+    for ghost in ghosts:
+        if ghost["visible"]:
+            render_ghost(ghost)
+
+
 def update_ghosts():
     global hide_ghost_at, show_ghost_at, lives
     "Update the ghost states"
@@ -80,7 +87,6 @@ def update_ghosts():
             if ghost["visible"] == True:
                 ghost["visible"] = False
                 show_ghost_at = randomShowTime()
-                # we did not click in time :-(
                 lives = lives - 1
 
     # check to see if all ghosts are hidden
@@ -108,19 +114,10 @@ def randomShowTime():
     return now
 
 
-def render_ghosts():
-    "Draw the ghosts"
-    # Check each of the ghosts
-    for ghost in ghosts:
-        # Check if its visible
-        if(ghost["visible"]):
-            # Draw it
-            render_ghost(ghost)
-    return
-
-
 def checkMouseClick(mouse_position):
+    global lives
     "Check if the mouse position is over a visible ghost"
+
     for ghost in ghosts:
 
         # Check if its visible
@@ -131,7 +128,23 @@ def checkMouseClick(mouse_position):
 
             if(ghost_clicked):
                 ghost_found(ghost)
+    return
 
+
+def checkPoint(mouse_position, ghost):
+    "check to see point is in rectangle"
+    # create a rectangle
+    rect = pygame.Rect((ghost["x1"], ghost["y1"]), (ghost["x2"], ghost["y2"]))
+    # check to see if our mouse position is inside the rectangle
+    result = rect.collidepoint(mouse_position)
+    return result
+
+
+def render_score():
+    "Draw the score"
+    # draw title text to a surface
+    surface = large_font.render("Score:" + str(score), True, (255, 255, 255))
+    screen.blit(surface, (10, 0))
     return
 
 
@@ -140,14 +153,6 @@ def ghost_found(ghost):
     global score
     ghost["visible"] = False
     score = score + 1
-    return
-
-
-def render_score():
-    "Draw the score"
-    # draw title text to a surface
-    surface = large_font.render("Score:" + str(score), True, (255, 255, 255))
-    screen.blit(surface, (10, 0))
     return
 
 
@@ -162,13 +167,17 @@ def render_lives():
     return
 
 
-def checkPoint(mouse_position, ghost):
-    "check to see point is in rectangle"
-    # create a rectangle
-    rect = pygame.Rect((ghost["x1"], ghost["y1"]), (ghost["x2"], ghost["y2"]))
-    # check to see if our mouse position is inside the rectangle
-    result = rect.collidepoint(mouse_position)
-    return result
+def render_game_over():
+    "Draw the game over"
+
+    if game_over:
+        # draw title text to a surface
+        surface = large_font.render("Game Over", True, (255, 255, 255))
+        # calculate the x postion to center text
+        screen_x = (screen_width - surface.get_width()) / 2
+        # draw to screen
+        screen.blit(surface, (screen_x, 300))
+    return
 
 # Define variables
 screen_width = 800
@@ -197,19 +206,22 @@ skull_image = pygame.image.load(asset_path + "skull.png")
 pygame.font.init()
 large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 
-# Hide and shot times
-hide_ghost_at = 0
-show_ghost_at = 0
-
-# Player score and lives
-score = 0
-lives = 3
-
 # Ghost Positions
 ghosts = read_ghost_data(asset_path)
 
 # keep the game running while true
 running = True
+
+# Hide and shot times
+hide_ghost_at = 0
+show_ghost_at = 0
+
+# Player score
+score = 0
+lives = 3
+
+# Track game over
+game_over = False
 
 while running:
 
@@ -226,8 +238,12 @@ while running:
     # fill the screen with a solid black colour
     screen.fill((0, 0, 0))
 
+    if lives < 1:
+        game_over = True
+
     # Update ghosts
-    update_ghosts()
+    if game_over == False:
+        update_ghosts()
 
     # draw sky
     render_sky()
@@ -235,7 +251,7 @@ while running:
     # draw windows
     render_windows()
 
-    # render ghost
+    # draw ghosts
     render_ghosts()
 
     # draw house
@@ -249,6 +265,9 @@ while running:
 
     # draw lives remaining
     render_lives()
+
+    # draw game over
+    render_game_over()
 
     # update the screen
     pygame.display.update()
