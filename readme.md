@@ -524,9 +524,86 @@ def render_ghosts():
 10. Try running it again, now you should see a single ghost being drawn.  Try stopping and starting the game a few times to see a different ghost drawn. 
 
 
-### Step 7
-Hide the ghost after a time
-Show a ghost after a time
+### Step 7 Now you see me, now you don't
+In the last step we added code to randomly select a ghost if none as visible.  This step lets hide the ghost after a little time.  We are going to use the pygame function ```pygame.time.get_ticks()``.  This function returns the number of milliseconds (also known as ticks in game programming) since we initialized pygame.  It does not reset and just continues to get bigger.
+
+1.  Lets add two variables to track when we need to hide and show a ghost.  Add the following near the ```running = True``` statement.
+
+```
+hide_ghost_at = 0
+show_ghost_at = 0
+```
+
+2. Next we will add two functions that we can call to set the hide_ghost_at and show_ghost_at variables.  Ypou can put them near the ```update_ghosts()``` function.  We are going to use the ```randint()``` function.  We can call the ```randint(min, max)``` with a minimum and maximum values.  This is handy as the result will be between these values.   FYI.  1000 ticks equals 1 second 
+
+```
+def randomHideTime():
+    now = pygame.time.get_ticks()
+    now = now + randint(1000, 2000)
+    return now
+
+def randomShowTime():
+    now = pygame.time.get_ticks()
+    now = now + randint(1000, 3000)
+    return now
+```
+
+3. Next we will use these functions in the ```update_ghosts()``` functions.  We need to be able to access the global ```hide_ghost_at``` and ```show_ghost_at``` variables.  Add the following below ```def update_ghosts():``` function definition.
+
+```
+    global hide_ghost_at, show_ghost_at
+```
+
+4. If the hide time is in the past (smaller than the current number of ticks, lets hide any visible ghosts.  We can use and if statement and a for loop to do this. 
+
+```
+    if hide_ghost_at < pygame.time.get_ticks():
+        for ghost in ghosts:
+            if ghost["visible"] == True:
+                ghost["visible"] = False
+```
+
+5.  As we have hidden all the ghosts we need to set the show_ghost_at variable.  Add the following just the for loop.  Add this just before the for loop.  
+
+```
+        show_ghost_at = randomShowTime()
+```
+
+6.  Try running the game.  The ghost should disappear.  Lets now add the code to make it re-appear.  Similar to the hiding ghosts we will add an if statment to check the ```show_ghosts_at```.  Add an if statemnt within the check to see if all the ghosts are hidden.  We will also need to indent the code that selects a random ghost.
+
+```
+    if(all(ghost["visible"] == False for ghost in ghosts)):
+        # if show_ghost_at is in the past, show a ghost
+        if show_ghost_at < pygame.time.get_ticks():
+            ghost_to_turn_on = randint(0, len(ghosts) - 1)
+```
+
+7. Last of all we need to set the ```hide_ghost_at``` variable.  Do this after the statement that sets the ghost visible.  The complete ```update_ghosts``` function is show below:
+
+```
+def update_ghosts():
+    global hide_ghost_at, show_ghost_at
+    "Update the ghost states"
+
+    # if the hide time is in the past, hide the ghosts
+    if hide_ghost_at < pygame.time.get_ticks():
+        show_ghost_at = randomShowTime()
+        for ghost in ghosts:
+            if ghost["visible"] == True:
+                ghost["visible"] = False
+
+    # check to see if all ghosts are hidden
+    if(all(ghost["visible"] == False for ghost in ghosts)):
+        # if show_ghost_at is in the past, show a ghost
+        if show_ghost_at < pygame.time.get_ticks():
+            ghost_to_turn_on = randint(0, len(ghosts) - 1)
+            ghosts[ghost_to_turn_on]["visible"] = True
+            hide_ghost_at = randomHideTime()
+
+    return
+```
+
+8.  Run the game, and you should see the ghost appear and disappear.
 
 ### Step 8 
 Check for mouse clicks 
