@@ -605,9 +605,54 @@ def update_ghosts():
 
 8.  Run the game, and you should see the ghost appear and disappear.
 
-### Step 8 
-Check for mouse clicks 
-Check for mouse clicks on visible ghosts
+### Step 8 Mouse clicks
+
+Ok,  In this step we will use the pygame events system to detect mouse clicks.
+
+1.  Go to main game loop and find the event processing we added earlier.  We are going to add another test to check for pygame mouse click events.  This event is only occurs when the mouse is down.   If we see it we will call a function with the screen position of the mouse pointer which we can get by calling ```pygame.mouse.get_pos()```.  You can see the extra two lines at the bottom.
+
+```
+    # handle every event since the last frame.
+    for event in pygame.event.get():
+
+        # if quit (esc) exit the game
+        if event.type == pygame.QUIT:
+            pygame.quit()  # quit the screen
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            checkMouseClick(pygame.mouse.get_pos())
+
+```
+
+2. Lets add the checkMouseClick function. We are going to check each ghost that is visible.  We can do this with a for loop and an if statement.  If visible we will call another function that will check we clicked a ghost.  For now lets just print out if we have found a ghost.  The code should look like the following:
+
+```
+def checkMouseClick(mouse_position):
+
+    for ghost in ghosts:
+
+        if ghost["visible"]:
+            ghost_clicked = checkPoint(mouse_position, ghost)
+
+            if(ghost_clicked):
+                print("found ghost")
+
+```
+
+3.  We need to implement the checkPoint function.  This takes the mouse_position and a ghost.  We will use a ```pygame.Rect``` object that has functions to help check if a point is inside it.  The function will return True if the mouse click is with the rectangle of the ghost.
+
+```
+def checkPoint(mouse_position, ghost):
+
+    rect = pygame.Rect((ghost["x1"], ghost["y1"]), (ghost["x2"], ghost["y2"]))
+
+    result = rect.collidepoint(mouse_position)
+
+    return result
+
+```
+
+4.  Try running the game now.  Try clicking on a ghost, you should see "found ghost" printed in the terminal window.  Also try not clicking on a ghost, less exciting, you should not see anything.
 
 ### Step 9
 Hide found ghost

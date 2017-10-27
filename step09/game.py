@@ -70,6 +70,13 @@ def render_ghost(ghost):
     return
 
 
+def render_ghosts():
+    # Draw some ghosts
+    for ghost in ghosts:
+        if ghost["visible"]:
+            render_ghost(ghost)
+
+
 def update_ghosts():
     global hide_ghost_at, show_ghost_at
     "Update the ghost states"
@@ -106,15 +113,28 @@ def randomShowTime():
     return now
 
 
-def render_ghosts():
-    "Draw the ghosts"
-    # Check each of the ghosts
+def checkMouseClick(mouse_position):
+    "Check if the mouse position is over a visible ghost"
     for ghost in ghosts:
+
         # Check if its visible
         if(ghost["visible"]):
-            # Draw it
-            render_ghost(ghost)
+
+            # call a function to check if we have clicked ghost
+            ghost_clicked = checkPoint(mouse_position, ghost)
+
+            if(ghost_clicked):
+                print("found ghost")
     return
+
+
+def checkPoint(mouse_position, ghost):
+    "check to see point is in rectangle"
+    # create a rectangle
+    rect = pygame.Rect((ghost["x1"], ghost["y1"]), (ghost["x2"], ghost["y2"]))
+    # check to see if our mouse position is inside the rectangle
+    result = rect.collidepoint(mouse_position)
+    return result
 
 # Define variables
 screen_width = 800
@@ -143,15 +163,15 @@ skull_image = pygame.image.load(asset_path + "skull.png")
 pygame.font.init()
 large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 
-# Hide and shot times
-hide_ghost_at = 0
-show_ghost_at = 0
-
 # Ghost Positions
 ghosts = read_ghost_data(asset_path)
 
 # keep the game running while true
 running = True
+
+# Hide and shot times
+hide_ghost_at = 0
+show_ghost_at = 0
 
 while running:
 
@@ -162,6 +182,8 @@ while running:
         if event.type == pygame.QUIT:
             pygame.quit()  # quit the screen
             running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            checkMouseClick(pygame.mouse.get_pos())
 
     # fill the screen with a solid black colour
     screen.fill((0, 0, 0))
@@ -175,7 +197,7 @@ while running:
     # draw windows
     render_windows()
 
-    # render ghost
+    # draw ghosts
     render_ghosts()
 
     # draw house
