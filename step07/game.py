@@ -73,7 +73,8 @@ def render_ghost(ghost):
 def render_ghosts():
     # Draw some ghosts
     for ghost in ghosts:
-        render_ghost(ghost)
+        if ghost["visible"]:
+            render_ghost(ghost)
 
 
 def update_ghosts():
