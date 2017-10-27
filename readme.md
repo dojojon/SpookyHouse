@@ -112,7 +112,7 @@ pygame.init()
 screen_width = 800
 screen_height = 600
 
-screen = pygame.display.set_mode((screen_height, screen_height))
+screen = pygame.display.set_mode((screen_width, screen_height))
 ```
 
 You can change the game resolution here.  The above code creates a screen 800 pixels wide by 600 pixels high.   If you want to run the low resolution version change the values as shown below.  
@@ -121,7 +121,7 @@ You can change the game resolution here.  The above code creates a screen 800 pi
 screen_width = 640
 screen_height = 480
 
-screen = pygame.display.set_mode((screen_height, screen_height))
+screen = pygame.display.set_mode((screen_width, screen_height))
 ```
 
 Most computers will be fine using 800 by 600.
@@ -453,21 +453,255 @@ def render_ghosts():
 ![Spooky House Step 5 Screen Shot](/screenshots/step05.png?raw=true "Step 5 All the ghosts")
 
 
+### Step 6  Random Ghosts
 
-### Step 6
-Show a random ghost if none is displayed
+So in this game we will show a ghost if none are visible.  Lets add a function called ```update_ghosts()``` to make this happen.
+1.  At the top of the game.py file we need to import a random number function.  Add the following under the ```import pygame```.
 
-### Step 7
-Hide the ghost after a time
-Show a ghost after a time
+```
+from random import randint
+```
 
-### Step 8 
-Check for mouse clicks 
-Check for mouse clicks on visible ghosts
+2.  Add a function near the ```render_ghosts()``` function
+```
+def update_ghosts():
+```
 
-### Step 9
-Hide found ghost
-Score
+3. We area going to use the visible attribute of the ghost data to store if a ghost is visible or not.  We only want to set this to true if all of the ghosts are hidden.  We can use the build in all function to do this.  You find out more about the all function here [https://docs.python.org/2/library/functions.html#all].  We can use the all function to return ```True``` if all the ghosts are not visible.
+
+```
+    if(all(ghost["visible"] == False for ghost in ghosts)):
+```
+
+4.  If no ghost is visible, then use another function to pick one at random and make if visible.  
+
+```
+        ghost_to_turn_on = randint(0, len(ghosts) - 1)
+        ghosts[ghost_to_turn_on]["visible"] = True
+```
+
+5. Last of all lets close the function by returning,
+```
+    return
+```
+
+6.  The function should look like this.
+
+```
+def update_ghosts():
+    if(all(ghost["visible"] == False for ghost in ghosts)):
+        ghost_to_turn_on = randint(0, len(ghosts) - 1)
+        ghosts[ghost_to_turn_on]["visible"] = True
+    return
+```
+
+7.  We need to call this function in out game loop.  Below the screen.fill((0,0,0)) call, call our new function.
+
+```
+    update_ghosts()
+```
+
+8.  Try running the game now.  Strange all the ghosts are still showing.  Thats because we need to add an if statement to only render ghosts if they are visible.  Go to the ```render_ghosts()``` function.  It should look like this.
+
+```
+def render_ghosts():
+    # Draw some ghosts
+    for ghost in ghosts:
+        render_ghost(ghost)
+
+```
+
+9.  Add an if statement to only call the render_ghost() function if the ghost is visible.
+
+```
+def render_ghosts():
+    # Draw some ghosts
+    for ghost in ghosts:
+        if ghost["visible"]:
+            render_ghost(ghost)
+```
+
+10. Try running it again, now you should see a single ghost being drawn.  Try stopping and starting the game a few times to see a different ghost drawn. 
+
+
+### Step 7 Now you see me, now you don't
+In the last step we added code to randomly select a ghost if none as visible.  This step lets hide the ghost after a little time.  We are going to use the pygame function ```pygame.time.get_ticks()``.  This function returns the number of milliseconds (also known as ticks in game programming) since we initialized pygame.  It does not reset and just continues to get bigger.
+
+1.  Lets add two variables to track when we need to hide and show a ghost.  Add the following near the ```running = True``` statement.
+
+```
+hide_ghost_at = 0
+show_ghost_at = 0
+```
+
+2. Next we will add two functions that we can call to set the hide_ghost_at and show_ghost_at variables.  Ypou can put them near the ```update_ghosts()``` function.  We are going to use the ```randint()``` function.  We can call the ```randint(min, max)``` with a minimum and maximum values.  This is handy as the result will be between these values.   FYI.  1000 ticks equals 1 second 
+
+```
+def randomHideTime():
+    now = pygame.time.get_ticks()
+    now = now + randint(1000, 2000)
+    return now
+
+def randomShowTime():
+    now = pygame.time.get_ticks()
+    now = now + randint(1000, 3000)
+    return now
+```
+
+3. Next we will use these functions in the ```update_ghosts()``` functions.  We need to be able to access the global ```hide_ghost_at``` and ```show_ghost_at``` variables.  Add the following below ```def update_ghosts():``` function definition.
+
+```
+    global hide_ghost_at, show_ghost_at
+```
+
+4. If the hide time is in the past (smaller than the current number of ticks, lets hide any visible ghosts.  We can use and if statement and a for loop to do this. 
+
+```
+    if hide_ghost_at < pygame.time.get_ticks():
+        for ghost in ghosts:
+            if ghost["visible"] == True:
+                ghost["visible"] = False
+```
+
+5.  As we have hidden all the ghosts we need to set the show_ghost_at variable.  Add the following just the for loop.  Add this just before the for loop.  
+
+```
+        show_ghost_at = randomShowTime()
+```
+
+6.  Try running the game.  The ghost should disappear.  Lets now add the code to make it re-appear.  Similar to the hiding ghosts we will add an if statment to check the ```show_ghosts_at```.  Add an if statement within the check to see if all the ghosts are hidden.  We will also need to indent the code that selects a random ghost.
+
+```
+    if(all(ghost["visible"] == False for ghost in ghosts)):
+        # if show_ghost_at is in the past, show a ghost
+        if show_ghost_at < pygame.time.get_ticks():
+            ghost_to_turn_on = randint(0, len(ghosts) - 1)
+```
+
+7. Last of all we need to set the ```hide_ghost_at``` variable.  Do this after the statement that sets the ghost visible.  The complete ```update_ghosts``` function is show below:
+
+```
+def update_ghosts():
+    global hide_ghost_at, show_ghost_at
+    "Update the ghost states"
+
+    # if the hide time is in the past, hide the ghosts
+    if hide_ghost_at < pygame.time.get_ticks():
+        show_ghost_at = randomShowTime()
+        for ghost in ghosts:
+            if ghost["visible"] == True:
+                ghost["visible"] = False
+
+    # check to see if all ghosts are hidden
+    if(all(ghost["visible"] == False for ghost in ghosts)):
+        # if show_ghost_at is in the past, show a ghost
+        if show_ghost_at < pygame.time.get_ticks():
+            ghost_to_turn_on = randint(0, len(ghosts) - 1)
+            ghosts[ghost_to_turn_on]["visible"] = True
+            hide_ghost_at = randomHideTime()
+
+    return
+```
+
+8.  Run the game, and you should see the ghost appear and disappear.
+
+### Step 8 Mouse clicks
+
+Ok,  In this step we will use the pygame events system to detect mouse clicks.
+
+1.  Go to main game loop and find the event processing we added earlier.  We are going to add another test to check for pygame mouse click events.  This event is only occurs when the mouse is down.   If we see it we will call a function with the screen position of the mouse pointer which we can get by calling ```pygame.mouse.get_pos()```.  You can see the extra two lines at the bottom.
+
+```
+    # handle every event since the last frame.
+    for event in pygame.event.get():
+
+        # if quit (esc) exit the game
+        if event.type == pygame.QUIT:
+            pygame.quit()  # quit the screen
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            checkMouseClick(pygame.mouse.get_pos())
+
+```
+
+2. Lets add the checkMouseClick function. We are going to check each ghost that is visible.  We can do this with a for loop and an if statement.  If visible we will call another function that will check we clicked a ghost.  For now lets just print out if we have found a ghost.  The code should look like the following:
+
+```
+def checkMouseClick(mouse_position):
+
+    for ghost in ghosts:
+
+        if ghost["visible"]:
+            ghost_clicked = checkPoint(mouse_position, ghost)
+
+            if(ghost_clicked):
+                print("found ghost")
+
+```
+
+3.  We need to implement the checkPoint function.  This takes the mouse_position and a ghost.  We will use a ```pygame.Rect``` object that has functions to help check if a point is inside it.  The function will return True if the mouse click is with the rectangle of the ghost.
+
+```
+def checkPoint(mouse_position, ghost):
+
+    rect = pygame.Rect((ghost["x1"], ghost["y1"]), (ghost["x2"], ghost["y2"]))
+
+    result = rect.collidepoint(mouse_position)
+
+    return result
+
+```
+
+4.  Try running the game now.  Try clicking on a ghost, you should see "found ghost" printed in the terminal window.  Also try not clicking on a ghost, less exciting, you should not see anything.
+
+### Step 9  Ghost Busters !!!
+
+In the last step we added code for using the mouse events to detect if we found a ghost.  In this step we will hide the ghost if we click it and a place score.
+
+1.  We can keep track of the score using a variable.  Add one near the ```running = True``` statement.
+
+```
+score = 0
+```
+
+2.   Lets add a function to render the score to the screen.
+
+```
+def render_score():
+    surface = large_font.render("Score:" + str(score), True, (255, 255, 255))
+    screen.blit(surface, (10, 0))
+    return
+
+```
+
+3.  We need to call this in the game loop.  Add a call to this function just after the ```render_title()``` function.
+
+```
+    render_score()
+```
+
+4.  Try running the game.  You should now see the score displayed in the top left of the screen.
+
+5.  Remember the code we added to print out "found ghost".  Replace that with a call to a new function we are about to create..
+
+```
+    ghost_found(ghost)
+```
+
+6.  Now lets create the ```ghost_found()``` function that will take a ghost as a parameter.  I'll not go into the details, but we want to hide the ghost by setting "visible" to False and adding 1 to the global score.
+
+```
+def ghost_found(ghost):
+    global score
+    ghost["visible"] = False
+    score = score + 1
+    return
+```
+
+7.  Try running the game now.  Clicking ghost should increase the score.  
+
+![Spooky House Step 9 Screen Shot](/screenshots/step09.png?raw=true "Step 9 Scores")
+
 
 ### Step 10
 Lives
