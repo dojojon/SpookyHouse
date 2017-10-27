@@ -569,7 +569,7 @@ def randomShowTime():
         show_ghost_at = randomShowTime()
 ```
 
-6.  Try running the game.  The ghost should disappear.  Lets now add the code to make it re-appear.  Similar to the hiding ghosts we will add an if statment to check the ```show_ghosts_at```.  Add an if statemnt within the check to see if all the ghosts are hidden.  We will also need to indent the code that selects a random ghost.
+6.  Try running the game.  The ghost should disappear.  Lets now add the code to make it re-appear.  Similar to the hiding ghosts we will add an if statment to check the ```show_ghosts_at```.  Add an if statement within the check to see if all the ghosts are hidden.  We will also need to indent the code that selects a random ghost.
 
 ```
     if(all(ghost["visible"] == False for ghost in ghosts)):
@@ -654,9 +654,54 @@ def checkPoint(mouse_position, ghost):
 
 4.  Try running the game now.  Try clicking on a ghost, you should see "found ghost" printed in the terminal window.  Also try not clicking on a ghost, less exciting, you should not see anything.
 
-### Step 9
-Hide found ghost
-Score
+### Step 9  Ghost Busters !!!
+
+In the last step we added code for using the mouse events to detect if we found a ghost.  In this step we will hide the ghost if we click it and a place score.
+
+1.  We can keep track of the score using a variable.  Add one near the ```running = True``` statement.
+
+```
+score = 0
+```
+
+2.   Lets add a function to render the score to the screen.
+
+```
+def render_score():
+    surface = large_font.render("Score:" + str(score), True, (255, 255, 255))
+    screen.blit(surface, (10, 0))
+    return
+
+```
+
+3.  We need to call this in the game loop.  Add a call to this function just after the ```render_title()``` function.
+
+```
+    render_score()
+```
+
+4.  Try running the game.  You should now see the score displayed in the top left of the screen.
+
+5.  Remember the code we added to print out "found ghost".  Replace that with a call to a new function we are about to create..
+
+```
+    ghost_found(ghost)
+```
+
+6.  Now lets create the ```ghost_found()``` function that will take a ghost as a parameter.  I'll not go into the details, but we want to hide the ghost by setting "visible" to False and adding 1 to the global score.
+
+```
+def ghost_found(ghost):
+    global score
+    ghost["visible"] = False
+    score = score + 1
+    return
+```
+
+7.  Try running the game now.  Clicking ghost should increase the score.  
+
+![Spooky House Step 9 Screen Shot](/screenshots/step09.png?raw=true "Step 9 Scores")
+
 
 ### Step 10
 Lives

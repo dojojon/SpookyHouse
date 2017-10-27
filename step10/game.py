@@ -70,6 +70,13 @@ def render_ghost(ghost):
     return
 
 
+def render_ghosts():
+    # Draw some ghosts
+    for ghost in ghosts:
+        if ghost["visible"]:
+            render_ghost(ghost)
+
+
 def update_ghosts():
     global hide_ghost_at, show_ghost_at
     "Update the ghost states"
@@ -106,17 +113,6 @@ def randomShowTime():
     return now
 
 
-def render_ghosts():
-    "Draw the ghosts"
-    # Check each of the ghosts
-    for ghost in ghosts:
-        # Check if its visible
-        if(ghost["visible"]):
-            # Draw it
-            render_ghost(ghost)
-    return
-
-
 def checkMouseClick(mouse_position):
     "Check if the mouse position is over a visible ghost"
     for ghost in ghosts:
@@ -128,7 +124,8 @@ def checkMouseClick(mouse_position):
             ghost_clicked = checkPoint(mouse_position, ghost)
 
             if(ghost_clicked):
-                print("found ghost")
+                ghost_found(ghost)
+
     return
 
 
@@ -139,6 +136,22 @@ def checkPoint(mouse_position, ghost):
     # check to see if our mouse position is inside the rectangle
     result = rect.collidepoint(mouse_position)
     return result
+
+
+def render_score():
+    "Draw the score"
+    # draw title text to a surface
+    surface = large_font.render("Score:" + str(score), True, (255, 255, 255))
+    screen.blit(surface, (10, 0))
+    return
+
+
+def ghost_found(ghost):
+    "Found a ghost"
+    global score
+    ghost["visible"] = False
+    score = score + 1
+    return
 
 # Define variables
 screen_width = 800
@@ -167,15 +180,18 @@ skull_image = pygame.image.load(asset_path + "skull.png")
 pygame.font.init()
 large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 
-# Hide and shot times
-hide_ghost_at = 0
-show_ghost_at = 0
-
 # Ghost Positions
 ghosts = read_ghost_data(asset_path)
 
 # keep the game running while true
 running = True
+
+# Hide and shot times
+hide_ghost_at = 0
+show_ghost_at = 0
+
+# Player score
+score = 0
 
 while running:
 
@@ -201,7 +217,7 @@ while running:
     # draw windows
     render_windows()
 
-    # render ghost
+    # draw ghosts
     render_ghosts()
 
     # draw house
@@ -209,6 +225,9 @@ while running:
 
     # draw title
     render_title()
+
+    # draw score
+    render_score()
 
     # update the screen
     pygame.display.update()
