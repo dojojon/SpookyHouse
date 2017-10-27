@@ -70,8 +70,15 @@ def render_ghost(ghost):
     return
 
 
+def render_ghosts():
+    # Draw some ghosts
+    for ghost in ghosts:
+        if ghost["visible"]:
+            render_ghost(ghost)
+
+
 def update_ghosts():
-    global hide_ghost_at, show_ghost_at
+    global hide_ghost_at, show_ghost_at, lives
     "Update the ghost states"
 
     # if the hide time is in the past, hide the ghosts
@@ -80,6 +87,7 @@ def update_ghosts():
             if ghost["visible"] == True:
                 ghost["visible"] = False
                 show_ghost_at = randomShowTime()
+                lives = lives - 1
 
     # check to see if all ghosts are hidden
     if(all(ghost["visible"] == False for ghost in ghosts)):
@@ -106,19 +114,10 @@ def randomShowTime():
     return now
 
 
-def render_ghosts():
-    "Draw the ghosts"
-    # Check each of the ghosts
-    for ghost in ghosts:
-        # Check if its visible
-        if(ghost["visible"]):
-            # Draw it
-            render_ghost(ghost)
-    return
-
-
 def checkMouseClick(mouse_position):
+    global lives
     "Check if the mouse position is over a visible ghost"
+
     for ghost in ghosts:
 
         # Check if its visible
@@ -129,7 +128,25 @@ def checkMouseClick(mouse_position):
 
             if(ghost_clicked):
                 ghost_found(ghost)
+                got_a_ghost = True
 
+    return
+
+
+def checkPoint(mouse_position, ghost):
+    "check to see point is in rectangle"
+    # create a rectangle
+    rect = pygame.Rect((ghost["x1"], ghost["y1"]), (ghost["x2"], ghost["y2"]))
+    # check to see if our mouse position is inside the rectangle
+    result = rect.collidepoint(mouse_position)
+    return result
+
+
+def render_score():
+    "Draw the score"
+    # draw title text to a surface
+    surface = large_font.render("Score:" + str(score), True, (255, 255, 255))
+    screen.blit(surface, (10, 0))
     return
 
 
@@ -141,21 +158,15 @@ def ghost_found(ghost):
     return
 
 
-def render_score():
-    "Draw the score"
-    # draw title text to a surface
-    surface = large_font.render("Score:" + str(score), True, (255, 255, 255))
-    screen.blit(surface, (10, 0))
+def render_lives():
+    "Draw a skull for each life"
+    skull_width = skull_image.get_rect().width
+    life = lives
+    while(life > 0):
+        skull_x = screen_width - (skull_width + 10) * (life)
+        screen.blit(skull_image, (skull_x, 5))
+        life = life - 1
     return
-
-
-def checkPoint(mouse_position, ghost):
-    "check to see point is in rectangle"
-    # create a rectangle
-    rect = pygame.Rect((ghost["x1"], ghost["y1"]), (ghost["x2"], ghost["y2"]))
-    # check to see if our mouse position is inside the rectangle
-    result = rect.collidepoint(mouse_position)
-    return result
 
 # Define variables
 screen_width = 800
@@ -184,18 +195,19 @@ skull_image = pygame.image.load(asset_path + "skull.png")
 pygame.font.init()
 large_font = pygame.font.Font(asset_path + "StartlingFont.ttf", 50)
 
+# Ghost Positions
+ghosts = read_ghost_data(asset_path)
+
+# keep the game running while true
+running = True
+
 # Hide and shot times
 hide_ghost_at = 0
 show_ghost_at = 0
 
 # Player score
 score = 0
-
-# Ghost Positions
-ghosts = read_ghost_data(asset_path)
-
-# keep the game running while true
-running = True
+lives = 3
 
 while running:
 
@@ -221,7 +233,7 @@ while running:
     # draw windows
     render_windows()
 
-    # render ghost
+    # draw ghosts
     render_ghosts()
 
     # draw house
@@ -232,6 +244,9 @@ while running:
 
     # draw score
     render_score()
+
+    # draw lives remaining
+    render_lives()
 
     # update the screen
     pygame.display.update()

@@ -703,17 +703,93 @@ def ghost_found(ghost):
 ![Spooky House Step 9 Screen Shot](/screenshots/step09.png?raw=true "Step 9 Scores")
 
 
-### Step 10
-Lives
+### Step 10  Lives
+
+In step the last 9 steps we have added most of the code for the game, but we are still lacking one thing...  The ability to lose.  In this step we will add lives and give the game a challenge.  For our game we are going lose a life each time a ghost hides its self.
+
+1. So we need to render the lives the player has.  We could just render a number, similar to the score, but lets do something cooler.  Time for a new function. We are going to draw the lives from the right hand side of the screen in.  First we need the width of the skull we are using for each life.
+
+```
+def render_lives():
+    skull_width = skull_image.get_rect().width
+```
+
+2. Next we will set a local variable called life to the number of lives the player has.  We will use this to count backwards to zero.
+
+```
+    life = lives
+```   
+
+3. We will add a loop, that subtracts 1 from the life variable whilst it is bigger than zero.
+
+```   
+    while(life > 0):
+```
+
+4. We can now calculate the screen x position to draw the skull and then use this to blit it to the screen.
+
+```
+        skull_x = screen_width - (skull_width + 10) * (life)
+        screen.blit(skull_image, (skull_x, 5))
+```
+
+5. Last of all at the end of the loop we will subtract 1 from life at the end of the loop.
+```
+        life = life - 1
+    return
+```
+
+6.  The complete function should look like this.
+
+```
+def render_lives():
+    "Draw a skull for each life"
+    skull_width = skull_image.get_rect().width
+    life = lives
+    while(life > 0):
+        skull_x = screen_width - (skull_width + 10) * (life)
+        screen.blit(skull_image, (skull_x, 5))
+        life = life - 1
+    return
+```
+
+7. Functions are no good unless they get called.  Add this to the game loop under the ```render_score()``` function call.  Try running the game.  If all is good you should see 3 skulls draw at the top right of the screen.
+
+8. Next we will update the ```update_ghosts()``` function.  Add lives to global import statement and subtract 1 from lives each time we set a ghost["visible] = False.  You can see the updated code below.
+
+```
+def update_ghosts():
+    global hide_ghost_at, show_ghost_at, lives
+    "Update the ghost states"
+
+    # if the hide time is in the past, hide the ghosts
+    if hide_ghost_at < pygame.time.get_ticks():
+        for ghost in ghosts:
+            if ghost["visible"] == True:
+                ghost["visible"] = False
+                show_ghost_at = randomShowTime()
+                lives = lives - 1
+
+    # check to see if all ghosts are hidden
+    if(all(ghost["visible"] == False for ghost in ghosts)):
+        # if show_ghost_at is in the past, show a ghost
+        if show_ghost_at < pygame.time.get_ticks():
+            ghost_to_turn_on = randint(0, len(ghosts) - 1)
+            ghosts[ghost_to_turn_on]["visible"] = True
+            hide_ghost_at = randomHideTime()
+
+    return
+```
+
+9.  Try running the game.  As long as you click the ghost in time, your lives should remain.  Try not clicking a ghost to see the lives run down.  Let them run down to zero.  As you can see the game as problem.  You can still continue playing with no lives.  We will fix that in the next step
 
 ### Step 11
-Menu
-
-### Step 12
 Game Over
 
-### Step 13
+### Step 12
+Menu
 
+### Step 13
 Other things to try
 
 Make the game harder as the score increases
